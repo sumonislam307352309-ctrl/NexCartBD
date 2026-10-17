@@ -1361,6 +1361,28 @@ async function loadSettings() {
   } catch (e) { console.warn("settings", e.message); }
 }
 
+function tryOpenDeepLink(deepId, attempt = 0) {
+  if (!deepId) return;
+  // Clean the id (remove any accidental spaces or encoding)
+  deepId = decodeURIComponent(String(deepId).trim());
+  const p = byId(deepId);
+  if (p) {
+    openProduct(deepId);
+    setTimeout(() => {
+      const el = document.getElementById("products") || document.getElementById("productGrid");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 250);
+    return;
+  }
+  // Retry up to ~6 seconds (products may load slowly)
+  if (attempt < 15) {
+    setTimeout(() => tryOpenDeepLink(deepId, attempt + 1), 400);
+  } else {
+    console.warn("Deep link product not found:", deepId, "Total products:", products.length);
+    if (typeof notify === "function") notify("এই পণ্যটি পাওয়া যায়নি বা আর সক্রিয় নেই।");
+  }
+}
+
 async function loadProducts() {
   try {
     const { data, error } = await db.from("products").select("*").eq("active", true).order("created_at", { ascending: false });
@@ -1372,6 +1394,13 @@ async function loadProducts() {
   }
   renderCategories();
   renderProducts();
+
+  // Deep link: open product if ?id= or ?product= is in URL
+  const params = new URLSearchParams(window.location.search);
+  const deepId = params.get("id") || params.get("product");
+  if (deepId) {
+    tryOpenDeepLink(deepId);
+  }
 }
 
 function renderCategories() {
@@ -1517,6 +1546,22 @@ function closeOverlay(id) {
   $(id).classList.remove("show");
   if (!document.querySelector(".overlay.show") && !document.querySelector(".modal-wrap.show"))
     document.body.style.overflow = "";
+  // Clean product deep-link from URL when closing product modal
+  if (id === "productModal") {
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("id") || url.searchParams.has("product")) {
+      url.searchParams.delete("id");
+      url.searchParams.delete("product");
+      history.replaceState(null, "", url.pathname + (url.search || ""));
+    }
+  }
+}
+
+function getProductLink(id) {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.searchParams.set("id", id);
+  return url.toString();
 }
 
 function openProduct(id) {
@@ -1524,6 +1569,11 @@ function openProduct(id) {
   const imgs = Array.isArray(p.images) && p.images.length ? p.images : [imgOf(p)];
   const hasOffer = p.old_price && p.old_price > p.price;
   const inStock = Number(p.stock) > 0;
+
+  // Update browser URL so the product is shareable
+  const shareUrl = getProductLink(p.id);
+  history.replaceState(null, "", shareUrl);
+
   $("productDetail").innerHTML = `
     <img class="detail-img" id="mainImg" src="${safe(imgs[0])}" alt="${safe(p.name)}" onerror="this.src='https://placehold.co/400x300?text=NexCart+BD'">
     ${imgs.length > 1 ? `<div class="thumb-row">${imgs.map((s, i) => `<img src="${safe(s)}" class="${i === 0 ? "active" : ""}" data-swap="${safe(s)}">`).join("")}</div>` : ""}
@@ -1533,7 +1583,8 @@ function openProduct(id) {
     <div class="p-stock ${inStock ? "in" : "out"}" style="margin-bottom:12px">${inStock ? "✓ স্টকে আছে (" + p.stock + " পিস)" : "স্টক নিশ্চিত করুন"}</div>
     <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:16px">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</p>
     <button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>
-    <button class="btn btn-soft btn-full" data-wish="${safe(p.id)}" style="margin-top:8px">${wishlist.includes(String(p.id)) ? "❤️ উইশলিস্ট থেকে সরাও" : "♡ উইশলিস্টে রাখুন"}</button>`;
+    <button class="btn btn-soft btn-full" data-wish="${safe(p.id)}" style="margin-top:8px">${wishlist.includes(String(p.id)) ? "❤️ উইশলিস্ট থেকে সরাও" : "♡ উইশলিস্টে রাখুন"}</button>
+    <button class="btn btn-outline btn-full" id="shareProductBtn" style="margin-top:8px">🔗 লিংক কপি করুন</button>`;
   openOverlay("productModal");
   $("productDetail").querySelectorAll("[data-swap]").forEach(img => {
     img.addEventListener("click", () => {
@@ -1541,6 +1592,22 @@ function openProduct(id) {
       img.parentNode.querySelectorAll("img").forEach(x => x.classList.remove("active"));
       img.classList.add("active");
     });
+  });
+
+  // Share / Copy link button
+  $("shareProductBtn")?.addEventListener("click", () => {
+    const link = getProductLink(p.id);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(() => notify("পণ্যের লিংক কপি হয়েছে! সোশ্যাল মিডিয়ায় শেয়ার করুন।"));
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = link;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      notify("পণ্যের লিংক কপি হয়েছে! সোশ্যাল মিডিয়ায় শেয়ার করুন।");
+    }
   });
 }
 
