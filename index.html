@@ -771,6 +771,56 @@ footer a:hover { color: #a5b4fc; }
   margin: 16px 0;
   color: var(--primary);
 }
+.pay-method-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.pay-card {
+  flex: 1 1 90px;
+  min-width: 88px;
+  max-width: 120px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 8px;
+  background: var(--surface);
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.pay-card:hover { border-color: var(--primary); background: var(--primary-soft); }
+.pay-card.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.15);
+}
+.pay-card img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #fff;
+}
+.pay-card .pay-logo-fallback {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  background: #f1f5f9;
+}
+.pay-card span {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text);
+}
 
 /* Order Status Timeline */
 .order-card {
@@ -971,8 +1021,8 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
 
 <!-- Top announcement -->
 <div class="topbar">
-  🚚 ঢাকায় ৳৬০ · সারা বাংলাদেশে ৳১২০ ডেলিভারি &nbsp;|&nbsp;
-  <a href="https://wa.me/8801307352309" target="_blank" rel="noopener">WhatsApp: 01307-352309</a>
+  <span id="topbarShip">🚚 ঢাকায় ৳৬০ · সারা বাংলাদেশে ৳১২০ ডেলিভারি</span> &nbsp;|&nbsp;
+  <a href="https://wa.me/8801307352309" target="_blank" rel="noopener" id="topbarWa">WhatsApp: 01307-352309</a>
 </div>
 
 <header>
@@ -1077,7 +1127,7 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
       <div class="promo-banner">
         <div>
           <h2>🎁 আজই অর্ডার করুন!</h2>
-          <p>পণ্য কার্টে যোগ করুন, সহজে অর্ডার সম্পন্ন করুন। ঢাকায় মাত্র ৳৬০, ঢাকার বাইরে ৳১২০।</p>
+          <p id="promoShipText">পণ্য কার্টে যোগ করুন, সহজে অর্ডার সম্পন্ন করুন। ঢাকায় মাত্র ৳৬০, ঢাকার বাইরে ৳১২০।</p>
         </div>
         <a href="#products" class="btn btn-white" style="flex-shrink:0">কেনাকাটা শুরু →</a>
       </div>
@@ -1129,7 +1179,7 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
       </div>
       <div>
         <h4>যোগাযোগ</h4>
-        <p>📱 01307-352309</p>
+        <p data-wa-text>📱 01307-352309</p>
         <p>💬 WhatsApp সাপোর্ট</p>
         <p>🕒 সকাল ১০টা – রাত ১০টা</p>
       </div>
@@ -1206,13 +1256,12 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
       </label>
       <div class="ship-info" id="shipInfo">জেলা সিলেক্ট করলে ডেলিভারি চার্জ দেখাবে</div>
       <input type="hidden" name="shipping" id="shippingInput" value="0">
-      <label class="field">পেমেন্ট পদ্ধতি *
-        <select name="payment" required>
-          <option value="Cash on Delivery">Cash on Delivery</option>
-        </select>
-      </label>
+      <label class="field" style="margin-bottom:8px">পেমেন্ট পদ্ধতি * <span style="font-weight:500;color:var(--muted)">(একটি সিলেক্ট করুন)</span></label>
+      <div id="payMethodCards" class="pay-method-cards"></div>
+      <input type="hidden" name="payment" id="paymentHidden" value="">
       <div class="checkout-total" id="checkoutTotal">সাবটোটাল হিসাব করা হচ্ছে...</div>
-      <button type="submit" class="btn btn-primary btn-full">অর্ডার কনফার্ম করুন →</button>
+      <p id="paySelectHint" style="text-align:center;font-size:13px;color:var(--muted);margin:8px 0 0">পেমেন্ট পদ্ধতি সিলেক্ট করলে অর্ডার বাটন আসবে</p>
+      <button type="submit" class="btn btn-primary btn-full" id="confirmOrderBtn" style="display:none">অর্ডার কনফার্ম করুন →</button>
     </form>
   </div>
 </div>
@@ -1297,6 +1346,8 @@ const imgOf = p => (Array.isArray(p.images) && p.images[0]) ? p.images[0] : "htt
 const BD_GEO = {"ঢাকা":["ধামরাই","দোহার","কেরানীগঞ্জ","নবাবগঞ্জ","সাভার","তেজগাঁও","মোহাম্মদপুর","মিরপুর","উত্তরা","গুলশান","বনানী","বাড্ডা","খিলগাঁও","মতিঝিল","যাত্রাবাড়ী","ডেমরা","সদরঘাট","ওয়ারী","লালবাগ","কোটওয়ালী","রমনা","শাহবাগ","পল্টন","সূত্রাপুর","বংশাল","চকবাজার","হাজারীবাগ","নিউমার্কেট","ধানমন্ডি","কলাবাগান","শ্যামপুর","কদমতলী","কামরাঙ্গীরচর"],"গাজীপুর":["গাজীপুর সদর","কালিয়াকৈর","কাপাসিয়া","শ্রীপুর","কালীগঞ্জ","টঙ্গী"],"নারায়ণগঞ্জ":["নারায়ণগঞ্জ সদর","আড়াইহাজার","রূপগঞ্জ","সোনারগাঁও","বন্ধর"],"নরসিংদী":["নরসিংদী সদর","বেলাব","মনোহরদী","পলাশ","রায়পুরা","শিবপুর"],"মানিকগঞ্জ":["মানিকগঞ্জ সদর","সিংগাইর","ঘিওর","শিবালয়","ডৌলতপুর","হরিরামপুর","সাটুরিয়া"],"মুন্সিগঞ্জ":["মুন্সিগঞ্জ সদর","শ্রীনগর","সিরাজদিখান","টংগিবাড়ী","লৌহজং","গজারিয়া"],"টাঙ্গাইল":["টাঙ্গাইল সদর","বাসাইল","ভূঞাপুর","দেলদুয়ার","ঘাটাইল","গোপালপুর","মধুপুর","মির্জাপুর","নাগরপুর","সখিপুর","কালিহাতী","ধনবাড়ী"],"কিশোরগঞ্জ":["কিশোরগঞ্জ সদর","অষ্টগ্রাম","বাজিতপুর","ভৈরব","হোসেনপুর","ইটনা","করিমগঞ্জ","কটিয়াদী","কুলিয়ারচর","মিঠামইন","নিকলী","পাকুন্দিয়া","তাড়াইল"],"ফরিদপুর":["ফরিদপুর সদর","আলফাডাঙ্গা","বোয়ালমারী","চরভদ্রাসন","মধুখালী","নগরকান্দা","সদরপুর","সালথা","ভাঙ্গা"],"মাদারীপুর":["মাদারীপুর সদর","কালকিনি","রাজৈর","শিবচর"],"গোপালগঞ্জ":["গোপালগঞ্জ সদর","কাশিয়ানী","কোটালীপাড়া","মুকসুদপুর","টুঙ্গিপাড়া"],"রাজবাড়ী":["রাজবাড়ী সদর","বালিয়াকান্দি","গোয়ালন্দ","পাংশা","কালুখালী"],"শরীয়তপুর":["শরীয়তপুর সদর","ডামুড্যা","গোসাইরহাট","নড়িয়া","ভেদরগঞ্জ","জাজিরা"],"চট্টগ্রাম":["চট্টগ্রাম সদর","আনোয়ারা","বাঁশখালী","বোয়ালখালী","চন্দনাইশ","ফটিকছড়ি","হাটহাজারী","লোহাগাড়া","মীরসরাই","পটিয়া","রাঙ্গুনিয়া","রাউজান","সন্দ্বীপ","সাতকানিয়া","সীতাকুণ্ড"],"কক্সবাজার":["কক্সবাজার সদর","চকরিয়া","কুতুবদিয়া","মহেশখালী","রামু","টেকনাফ","উখিয়া","পেকুয়া"],"কুমিল্লা":["কুমিল্লা সদর","বরুড়া","ব্রাহ্মণপাড়া","বুড়িচং","চান্দিনা","চৌদ্দগ্রাম","দাউদকান্দি","দেবিদ্বার","হোমনা","লাকসাম","মনোহরগঞ্জ","মেঘনা","মুরাদনগর","নাঙ্গলকোট","তিতাস","সদর দক্ষিণ"],"ফেনী":["ফেনী সদর","ছাগলনাইয়া","দাগনভূঞা","পরশুরাম","সোনাগাজী","ফুলগাজী"],"ব্রাহ্মণবাড়িয়া":["ব্রাহ্মণবাড়িয়া সদর","আখাউড়া","আশুগঞ্জ","বাঞ্ছারামপুর","বিজয়নগর","কসবা","নবীনগর","নাসিরনগর","সরাইল"],"নোয়াখালী":["নোয়াখালী সদর","বেগমগঞ্জ","চাটখিল","কোম্পানীগঞ্জ","হাতিয়া","সেনবাগ","সোনাইমুড়ী","সুবর্ণচর"],"লক্ষ্মীপুর":["লক্ষ্মীপুর সদর","রামগঞ্জ","রামগতি","রায়পুর","কমলনগর"],"চাঁদপুর":["চাঁদপুর সদর","ফরিদগঞ্জ","হাইমচর","হাজীগঞ্জ","কচুয়া","মতলব উত্তর","মতলব দক্ষিণ","শাহরাস্তি"],"সিলেট":["সিলেট সদর","বালাগঞ্জ","বিয়ানীবাজার","বিশ্বনাথ","কোম্পানীগঞ্জ","ফেঞ্চুগঞ্জ","গোলাপগঞ্জ","গোয়াইনঘাট","জৈন্তাপুর","কানাইঘাট","জকিগঞ্জ","দক্ষিণ সুরমা","ওসমানীনগর"],"মৌলভীবাজার":["মৌলভীবাজার সদর","বড়লেখা","জুড়ী","কমলগঞ্জ","কুলাউড়া","রাজনগর","শ্রীমঙ্গল"],"হবিগঞ্জ":["হবিগঞ্জ সদর","আজমিরীগঞ্জ","বাহুবল","বানিয়াচং","চুনারুঘাট","লাখাই","মাধবপুর","নবীগঞ্জ","শায়েস্তাগঞ্জ"],"সুনামগঞ্জ":["সুনামগঞ্জ সদর","বিশ্বম্ভরপুর","ছাতক","দক্ষিণ সুনামগঞ্জ","দিরাই","ধর্মপাশা","দোয়ারাবাজার","জগন্নাথপুর","জামালগঞ্জ","শাল্লা","তাহিরপুর"],"রাজশাহী":["রাজশাহী সদর","বাঘা","বাগমারা","চারঘাট","দুর্গাপুর","গোদাগাড়ী","মোহনপুর","পবা","পুঠিয়া","তানোর"],"নাটোর":["নাটোর সদর","বাগাতিপাড়া","বড়াইগ্রাম","গুরুদাসপুর","লালপুর","সিংড়া","নলডাঙ্গা"],"নওগাঁ":["নওগাঁ সদর","আত্রাই","বদলগাছী","ধামইরহাট","মান্দা","মহাদেবপুর","নিয়ামতপুর","পত্নীতলা","পরনপুর","রানীনগর","সাপাহার"],"চাঁপাইনবাবগঞ্জ":["চাঁপাইনবাবগঞ্জ সদর","গোমস্তাপুর","নাচোল","শিবগঞ্জ","ভোলাহাট"],"পাবনা":["পাবনা সদর","আটঘরিয়া","বেড়া","ভাঙ্গুড়া","চাটমোহর","ফরিদপুর","ঈশ্বরদী","সুজানগর"],"সিরাজগঞ্জ":["সিরাজগঞ্জ সদর","বেলকুচি","চৌহালি","কামারখন্দ","কাজীপুর","রায়গঞ্জ","শাহজাদপুর","তাড়াশ","উল্লাপাড়া"],"বগুড়া":["বগুড়া সদর","আদমদীঘি","ধুনট","দুপচাঁচিয়া","গাবতলী","কাহালু","নন্দীগ্রাম","সারিয়াকান্দি","শাজাহানপুর","শেরপুর","শিবগঞ্জ","সোনাতলা"],"জয়পুরহাট":["জয়পুরহাট সদর","আক্কেলপুর","কালাই","ক্ষেতলাল","পাঁচবিবি"],"খুলনা":["খুলনা সদর","বটিয়াঘাটা","ডুমুরিয়া","দীঘলিয়া","কয়রা","পাইকগাছা","ফুলতলা","রূপসা","তেরখাদা"],"বাগেরহাট":["বাগেরহাট সদর","চিতলমারী","ফকিরহাট","কচুয়া","মোল্লাহাট","মোরেলগঞ্জ","রামপাল","মোংলা","শরণখোলা"],"সাতক্ষীরা":["সাতক্ষীরা সদর","আশাশুনি","দেবহাটা","কালিগঞ্জ","কলারোয়া","তালা","শ্যামনগর"],"যশোর":["যশোর সদর","অভয়নগর","বাঘারপাড়া","চৌগাছা","ঝিকরগাছা","কেশবপুর","মণিরামপুর","শার্শা"],"ঝিনাইদহ":["ঝিনাইদহ সদর","কালীগঞ্জ","কোটচাঁদপুর","মহেশপুর","শৈলকুপা","হরিণাকুণ্ডু"],"মাগুরা":["মাগুরা সদর","মোহাম্মদপুর","শালিখা","শ্রীপুর"],"নড়াইল":["নড়াইল সদর","কালিয়া","লোহাগড়া"],"কুষ্টিয়া":["কুষ্টিয়া সদর","ভেরামারা","দৌলতপুর","খোকসা","কুমারখালী","মিরপুর"],"মেহেরপুর":["মেহেরপুর সদর","গাংনী","মুজিবনগর"],"চুয়াডাঙ্গা":["চুয়াডাঙ্গা সদর","আলমডাঙ্গা","দামুড়হুদা","জীবননগর"],"বরিশাল":["বরিশাল সদর","আগৈলঝাড়া","বাবুগঞ্জ","বাকেরগঞ্জ","বানারীপাড়া","গৌরনদী","হিজলা","মেহেন্দিগঞ্জ","মুলাদী","উজিরপুর"],"পটুয়াখালী":["পটুয়াখালী সদর","বাউফল","দশমিনা","গলাচিপা","কলাপাড়া","মির্জাগঞ্জ","দুমকি","রাঙ্গাবালী"],"ভোলা":["ভোলা সদর","বোরহানউদ্দিন","চরফ্যাশন","দৌলতখান","লালমোহন","মনপুরা","তজুমদ্দিন"],"পিরোজপুর":["পিরোজপুর সদর","নাজিরপুর","নেসারাবাদ","ভান্ডারিয়া","মঠবাড়িয়া","কাউখালী","ইন্দুরকানী"],"ঝালকাঠি":["ঝালকাঠি সদর","কাঠালিয়া","নলছিটি","রাজাপুর"],"বরগুনা":["বরগুনা সদর","আমতলী","বামনা","বেতাগী","পাথরঘাটা","তালতলী"],"রংপুর":["রংপুর সদর","বদরগঞ্জ","গংগাচড়া","কাউনিয়া","মিঠাপুকুর","পীরগাছা","পীরগঞ্জ","তারাগঞ্জ"],"দিনাজপুর":["দিনাজপুর সদর","বীরগঞ্জ","বোচাগঞ্জ","বিরল","চিরিরবন্দর","ফুলবাড়ী","ঘোড়াঘাট","হাকিমপুর","কাহারোল","খানসামা","নবাবগঞ্জ","পার্বতীপুর"],"কুড়িগ্রাম":["কুড়িগ্রাম সদর","ভুরুঙ্গামারী","চর রাজিবপুর","চিলমারী","ফুলবাড়ী","নাগেশ্বরী","রাজারহাট","রৌমারী","উলিপুর"],"গাইবান্ধা":["গাইবান্ধা সদর","ফুলছড়ি","গোবিন্দগঞ্জ","পলাশবাড়ী","সাদুল্লাপুর","সাঘাটা","সুন্দরগঞ্জ"],"লালমনিরহাট":["লালমনিরহাট সদর","আদিতমারী","হাতীবান্ধা","কালীগঞ্জ","পাটগ্রাম"],"নীলফামারী":["নীলফামারী সদর","ডিমলা","ডোমার","জলঢাকা","কিশোরগঞ্জ","সৈয়দপুর"],"ঠাকুরগাঁও":["ঠাকুরগাঁও সদর","বালিয়াডাঙ্গী","হরিপুর","পীরগঞ্জ","রাণীশংকৈল"],"পঞ্চগড়":["পঞ্চগড় সদর","আটোয়ারী","বোদা","দেবীগঞ্জ","তেতুলিয়া"],"ময়মনসিংহ":["ময়মনসিংহ সদর","ভালুকা","ধোবাউড়া","ফুলপুর","গফরগাঁও","গৌরীপুর","হালুয়াঘাট","ঈশ্বরগঞ্জ","মুক্তাগাছা","নান্দাইল","ফুলবাড়ীয়া","ত্রিশাল"],"জামালপুর":["জামালপুর সদর","বকশীগঞ্জ","দেওয়ানগঞ্জ","ইসলামপুর","মাদারগঞ্জ","মেলান্দহ","সরিষাবাড়ী"],"শেরপুর":["শেরপুর সদর","নালিতাবাড়ী","নকলা","শ্রীবরদী","ঝিনাইগাতী"],"নেত্রকোণা":["নেত্রকোণা সদর","আটপাড়া","বারহাট্টা","দুর্গাপুর","কলমাকান্দা","কেন্দুয়া","খালিয়াজুরি","মদন","মোহনগঞ্জ","পূর্বধলা"]};
 
 let products = [], cart = [], wishlist = [], paymentMethods = [], category = "সব", searchText = "", checkoutDraft = null, WHATSAPP = "8801307352309", toastTimer;
+let directOrderMode = false; // true when opened via product deep link ?id=
+let SHIP_DHAKA = 60, SHIP_OUTSIDE = 120;
 
 try {
   cart = JSON.parse(localStorage.getItem("stbd_cart") || "[]");
@@ -1338,8 +1389,41 @@ function updateCounts() {
 
 function shippingFor(district) {
   if (!district) return 0;
-  if (district === "ঢাকা") return 60;
-  return 120;
+  if (district === "ঢাকা") return SHIP_DHAKA;
+  return SHIP_OUTSIDE;
+}
+
+function formatWaDisplay(num) {
+  const d = String(num || "").replace(/\D/g, "");
+  if (d.startsWith("880") && d.length >= 13) return "0" + d.slice(3, 5) + d.slice(5, 7) + "-" + d.slice(7);
+  if (d.length === 11 && d.startsWith("01")) return d.slice(0, 5) + "-" + d.slice(5);
+  return d;
+}
+
+function applyWhatsAppEverywhere() {
+  const wa = String(WHATSAPP || "").replace(/\D/g, "");
+  if (!wa) return;
+  const link = "https://wa.me/" + wa;
+  const pretty = formatWaDisplay(wa);
+  document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+    a.href = link;
+    if (a.id === "topbarWa") a.textContent = "WhatsApp: " + pretty;
+  });
+  document.querySelectorAll("[data-wa-phone]").forEach(el => {
+    el.textContent = pretty;
+  });
+  document.querySelectorAll("[data-wa-text]").forEach(el => {
+    el.textContent = "📱 " + pretty;
+  });
+}
+
+function applyShippingTexts() {
+  const d = money(SHIP_DHAKA);
+  const o = money(SHIP_OUTSIDE);
+  const top = $("topbarShip");
+  if (top) top.textContent = `🚚 ঢাকায় ${d} · সারা বাংলাদেশে ${o} ডেলিভারি`;
+  const promo = $("promoShipText");
+  if (promo) promo.textContent = `পণ্য কার্টে যোগ করুন, সহজে অর্ডার সম্পন্ন করুন। ঢাকায় মাত্র ${d}, ঢাকার বাইরে ${o}।`;
 }
 
 function showSiteClosed(message) {
@@ -1375,12 +1459,29 @@ async function loadSettings() {
     let wa = map.whatsapp;
     if (typeof wa === "string") { try { wa = JSON.parse(wa); } catch (e) {} }
     if (wa) WHATSAPP = String(wa).replace(/\D/g, "");
-    paymentMethods = Array.isArray(map.payment_methods) ? map.payment_methods.filter(p => p.enabled !== false) : [];
+    applyWhatsAppEverywhere();
+
+    let ship = map.shipping_charges;
+    if (typeof ship === "string") { try { ship = JSON.parse(ship); } catch (e) { ship = null; } }
+    if (ship && typeof ship === "object") {
+      if (Number(ship.dhaka) >= 0) SHIP_DHAKA = Number(ship.dhaka);
+      if (Number(ship.outside) >= 0) SHIP_OUTSIDE = Number(ship.outside);
+    }
+    applyShippingTexts();
+
+    let pms = map.payment_methods;
+    if (typeof pms === "string") { try { pms = JSON.parse(pms); } catch (e) { pms = []; } }
+    paymentMethods = Array.isArray(pms) ? pms.filter(p => p && p.enabled !== false) : [];
+    // Normalize logo field
+    paymentMethods = paymentMethods.map(p => ({
+      ...p,
+      logo: (p.logo || p.logo_url || "").trim()
+    }));
     if (!paymentMethods.length) {
       paymentMethods = [
-        { id: "cod", name: "Cash on Delivery", type: "cod", enabled: true },
-        { id: "bkash", name: "বিকাশ", type: "mobile_banking", number: "01307352309", notice: "এই নম্বরে Send Money করুন।", enabled: true },
-        { id: "nagad", name: "নগদ", type: "mobile_banking", number: "01307352309", notice: "এই নম্বরে Send Money করুন।", enabled: true }
+        { id: "cod", name: "Cash on Delivery", type: "cod", enabled: true, logo: "", number: "", notice: "" },
+        { id: "bkash", name: "bKash", type: "mobile_banking", number: "01307352309", notice: "এই নম্বরে Send Money করুন।", enabled: true, logo: "" },
+        { id: "nagad", name: "Nagad", type: "mobile_banking", number: "01307352309", notice: "এই নম্বরে Send Money করুন।", enabled: true, logo: "" }
       ];
     }
 
@@ -1401,6 +1502,7 @@ function tryOpenDeepLink(deepId, attempt = 0) {
   deepId = decodeURIComponent(String(deepId).trim());
   const p = byId(deepId);
   if (p) {
+    directOrderMode = true;
     openProduct(deepId);
     setTimeout(() => {
       const el = document.getElementById("products") || document.getElementById("productGrid");
@@ -1560,7 +1662,7 @@ function renderCart() {
     <div class="summary-row"><span>ডেলিভারি</span><span>চেকআউটে নির্ধারিত</span></div>
     <div class="summary-row grand"><span>মোট</span><span>${money(sub)}</span></div>
     <button class="btn btn-primary btn-full" id="checkoutBtn" style="margin-top:12px">চেকআউট করুন →</button>
-    <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">ঢাকায় ৳৬০ · বাইরে ৳১২০</p>`;
+    <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">ঢাকায় ${money(SHIP_DHAKA)} · বাইরে ${money(SHIP_OUTSIDE)}</p>`;
 }
 
 function renderWishlist() {
@@ -1616,7 +1718,9 @@ function openProduct(id) {
     <div class="p-price" style="margin-bottom:10px">${money(p.price)}${hasOffer ? `<span class="old">${money(p.old_price)}</span>` : ""}</div>
     <div class="p-stock ${inStock ? "in" : "out"}" style="margin-bottom:12px">${inStock ? "✓ স্টকে আছে (" + p.stock + " পিস)" : "স্টক নিশ্চিত করুন"}</div>
     <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:16px">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</p>
-    <button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>
+    ${directOrderMode
+      ? `<button class="btn btn-primary btn-full" id="directOrderBtn">🛍️ অর্ডার করুন</button>`
+      : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`}
     <button class="btn btn-soft btn-full" data-wish="${safe(p.id)}" style="margin-top:8px">${wishlist.includes(String(p.id)) ? "❤️ উইশলিস্ট থেকে সরাও" : "♡ উইশলিস্টে রাখুন"}</button>
     <button class="btn btn-outline btn-full" id="shareProductBtn" style="margin-top:8px">🔗 লিংক কপি করুন</button>`;
   openOverlay("productModal");
@@ -1626,6 +1730,15 @@ function openProduct(id) {
       img.parentNode.querySelectorAll("img").forEach(x => x.classList.remove("active"));
       img.classList.add("active");
     });
+  });
+
+  // Direct order from product link
+  $("directOrderBtn")?.addEventListener("click", () => {
+    cart = [{ id: String(p.id), qty: 1 }];
+    save();
+    updateCounts();
+    closeOverlay("productModal");
+    openCheckout();
   });
 
   // Share / Copy link button
@@ -1645,16 +1758,56 @@ function openProduct(id) {
   });
 }
 
-function fillPaymentSelect() {
-  const sel = document.querySelector('#checkoutForm select[name="payment"]');
-  if (!sel) return;
-  const methods = (paymentMethods || []).filter(p => p.enabled !== false);
-  if (methods.length) {
-    sel.innerHTML = methods.map(m => `<option value="${m.name}">${m.name}</option>`).join("");
+function payLogoHtml(m) {
+  const logo = (m.logo || "").trim();
+  if (logo && /^https?:\/\//i.test(logo)) {
+    const src = logo.replace(/"/g, "%22");
+    return `<img src="${src}" alt="${safe(m.name)}" loading="eager" referrerpolicy="no-referrer" style="width:48px;height:48px;object-fit:contain;border-radius:10px;background:#fff;display:block" onerror="this.style.display='none';var f=this.nextElementSibling;if(f)f.style.display='grid'"><div class="pay-logo-fallback" style="display:none">${m.type === "cod" ? "💵" : "💳"}</div>`;
   }
+  const icon = m.type === "cod" ? "💵" : (/bkash|বিকাশ/i.test(m.name) ? "🔴" : (/nagad|নগদ/i.test(m.name) ? "🟠" : "💳"));
+  return `<div class="pay-logo-fallback">${icon}</div>`;
 }
+
+function renderPayCards() {
+  const box = $("payMethodCards");
+  const hidden = $("paymentHidden");
+  const confirmBtn = $("confirmOrderBtn");
+  const hint = $("paySelectHint");
+  if (!box) return;
+  const methods = (paymentMethods || []).filter(p => p.enabled !== false);
+  if (!methods.length) {
+    box.innerHTML = `<p style="font-size:13px;color:var(--muted)">কোনো পেমেন্ট মেথড নেই</p>`;
+    return;
+  }
+  // Do NOT auto-select — user must choose
+  if (hidden) hidden.value = "";
+  if (confirmBtn) confirmBtn.style.display = "none";
+  if (hint) hint.style.display = "block";
+
+  box.innerHTML = methods.map(m => `
+    <button type="button" class="pay-card" data-pay-name="${safe(m.name)}">
+      ${payLogoHtml(m)}
+      <span>${safe(m.name)}</span>
+    </button>`).join("");
+
+  box.querySelectorAll(".pay-card").forEach(btn => {
+    btn.addEventListener("click", () => {
+      box.querySelectorAll(".pay-card").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      if (hidden) hidden.value = btn.dataset.payName;
+      if (hint) hint.style.display = "none";
+      if (confirmBtn) {
+        confirmBtn.style.display = "block";
+        setTimeout(() => {
+          confirmBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 80);
+      }
+    });
+  });
+}
+
 function openCheckout() {
-  fillPaymentSelect();
+  renderPayCards();
   if (!cart.length) { notify("আগে কার্টে পণ্য যোগ করুন"); return; }
   updateCheckoutTotal();
   closeOverlay("cartOverlay");
@@ -1768,7 +1921,7 @@ document.addEventListener("click", e => {
 
   if (add) { addToCart(add.dataset.add); return; }
   if (wish) { toggleWish(wish.dataset.wish); return; }
-  if (detail) { openProduct(detail.dataset.detail); return; }
+  if (detail) { directOrderMode = false; openProduct(detail.dataset.detail); return; }
   if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta)); return; }
   if (remove) {
     cart = cart.filter(x => String(x.id) !== String(remove.dataset.remove));
@@ -1820,7 +1973,7 @@ $("districtSelect")?.addEventListener("change", () => {
   const d = $("districtSelect").value;
   const ship = shippingFor(d);
   $("shippingInput").value = ship;
-  $("shipInfo").textContent = d ? (d === "ঢাকা" ? "ঢাকায় ডেলিভারি: ৳৬০" : "ঢাকার বাইরে ডেলিভারি: ৳১২০") : "জেলা সিলেক্ট করলে ডেলিভারি চার্জ দেখাবে";
+  $("shipInfo").textContent = d ? (d === "ঢাকা" ? ("ঢাকায় ডেলিভারি: " + money(SHIP_DHAKA)) : ("ঢাকার বাইরে ডেলিভারি: " + money(SHIP_OUTSIDE))) : "জেলা সিলেক্ট করলে ডেলিভারি চার্জ দেখাবে";
   // Fill upazilas
   const uSel = $("upazilaSelect");
   if (uSel) {
@@ -1853,6 +2006,9 @@ $("checkoutForm").addEventListener("submit", async e => {
   };
   if (customer.name.length < 2 || customer.phone.length < 8 || customer.address.length < 5 || !upazila) {
     notify("সব তথ্য সঠিকভাবে পূরণ করুন"); return;
+  }
+  if (!customer.payment) {
+    notify("পেমেন্ট পদ্ধতি সিলেক্ট করুন"); return;
   }
 
   checkoutDraft = customer;
@@ -2025,6 +2181,26 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") document.querySelectorAll(".overlay.show,.modal-wrap.show").forEach(el => closeOverlay(el.id));
 });
 
+function setupStoreRealtime() {
+  try {
+    db.channel("nexcart-store-live")
+      .on("postgres_changes", { event: "*", schema: "public", table: "products" }, () => {
+        loadProducts();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "store_settings" }, async () => {
+        const siteOpen = await loadSettings();
+        if (siteOpen === false) return;
+        // Settings changed (WhatsApp, shipping, payments) — refresh product list too if needed
+        loadProducts();
+      })
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") console.log("Store realtime connected");
+      });
+  } catch (err) {
+    console.warn("Store realtime failed:", err);
+  }
+}
+
 /* Init */
 if (localStorage.getItem("stbd_theme") === "dark") {
   document.body.classList.add("dark");
@@ -2035,8 +2211,9 @@ updateCounts();
 (async () => {
   const siteOpen = await loadSettings();
   if (siteOpen !== false) {
-    loadProducts();
+    await loadProducts();
   }
+  setupStoreRealtime();
 })();
 </script>
 </body>
