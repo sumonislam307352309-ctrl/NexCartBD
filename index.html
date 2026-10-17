@@ -1342,6 +1342,31 @@ function shippingFor(district) {
   return 120;
 }
 
+function showSiteClosed(message) {
+  // Hide main shop UI
+  document.querySelectorAll("header, main, footer, .topbar, .mobile-bar").forEach(el => {
+    if (el) el.style.display = "none";
+  });
+  let box = document.getElementById("siteClosedScreen");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "siteClosedScreen";
+    box.style.cssText = "min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(135deg,#0B1426,#1a2744);color:#fff;text-align:center;font-family:system-ui,sans-serif;";
+    document.body.appendChild(box);
+  }
+  box.innerHTML = `
+    <div style="max-width:420px">
+      <div style="font-size:64px;margin-bottom:16px">🔒</div>
+      <h1 style="font-size:28px;font-weight:900;margin-bottom:12px">NexCart <span style="color:#00D4C8">BD</span></h1>
+      <p style="font-size:16px;line-height:1.7;opacity:.9;margin-bottom:24px">${message || "আমরা সাময়িকভাবে বন্ধ আছি। শীঘ্রই ফিরে আসছি। ধন্যবাদ।"}</p>
+      <a href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener"
+         style="display:inline-block;padding:12px 24px;background:#00D4C8;color:#0B1426;border-radius:12px;font-weight:700;text-decoration:none">
+        WhatsApp এ যোগাযোগ করুন
+      </a>
+    </div>`;
+  box.style.display = "flex";
+}
+
 async function loadSettings() {
   try {
     const { data } = await db.from("store_settings").select("*");
@@ -1358,7 +1383,16 @@ async function loadSettings() {
         { id: "nagad", name: "নগদ", type: "mobile_banking", number: "01307352309", notice: "এই নম্বরে Send Money করুন।", enabled: true }
       ];
     }
+
+    // Site open / closed
+    let site = map.site_status;
+    if (typeof site === "string") { try { site = JSON.parse(site); } catch (e) { site = null; } }
+    if (site && site.open === false) {
+      showSiteClosed(site.message);
+      return false; // signal that site is closed
+    }
   } catch (e) { console.warn("settings", e.message); }
+  return true;
 }
 
 function tryOpenDeepLink(deepId, attempt = 0) {
@@ -1928,9 +1962,10 @@ async function finalizeOrder(customer) {
   const subtotal = cartSub();
   const total = subtotal + customer.shipping;
 
-  let orderId = null, ok = false;
+  let orderId = null, ok = false, dbErrorMsg = "";
   try {
-    const { data, error } = await db.from("orders").insert({
+    // Important: do NOT use .select() after insert — RLS only allows admins to read orders
+    const { error } = await db.from("orders").insert({
       customer_name: customer.name,
       phone: customer.phone,
       address: fullAddress,
@@ -1942,14 +1977,16 @@ async function finalizeOrder(customer) {
       payment_method: customer.payment + (customer.sender_phone ? " | From: " + customer.sender_phone : ""),
       transaction_id: customer.transaction_id || "",
       status: "নতুন"
-    }).select("id").single();
+    });
     if (error) throw error;
-    orderId = data?.id || null; ok = true;
-  } catch (err) { console.error(err.message); }
+    ok = true;
+  } catch (err) {
+    console.error("Order insert failed:", err);
+    dbErrorMsg = err.message || String(err);
+  }
 
   const lines = [
     "🛍️ *NexCart BD — নতুন অর্ডার*",
-    orderId ? "অর্ডার আইডি: " + orderId.slice(0, 8) : "",
     "",
     "নাম: " + customer.name,
     "ফোন: " + customer.phone,
@@ -1966,7 +2003,7 @@ async function finalizeOrder(customer) {
     "ডেলিভারি: " + money(customer.shipping),
     "*মোট: " + money(total) + "*",
     "",
-    ok ? "✅ ডাটাবেসে সংরক্ষিত।" : "⚠️ ডাটাবেস সেভ নিশ্চিত হয়নি।"
+    ok ? "✅ ডাটাবেসে সংরক্ষিত।" : ("⚠️ ডাটাবেস সেভ হয়নি: " + (dbErrorMsg || "unknown error"))
   ].filter(Boolean).join("\n");
 
   if (WHATSAPP) window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(lines), "_blank");
@@ -1979,7 +2016,8 @@ async function finalizeOrder(customer) {
     $("successMsg").textContent = `ধন্যবাদ ${customer.name}! অর্ডার গ্রহণ করা হয়েছে। অর্ডার স্ট্যাটাস দেখতে "আমার অর্ডার" মেনুতে যান।`;
     openOverlay("successModal");
   } else {
-    notify("WhatsApp-এ গেছে, ডাটাবেস সেভ হয়নি।");
+    notify("অর্ডার WhatsApp-এ গেছে, কিন্তু ডাটাবেসে সেভ হয়নি। Supabase RLS পলিসি চেক করুন।");
+    console.error("DB Error details:", dbErrorMsg);
   }
 }
 
@@ -1994,8 +2032,12 @@ if (localStorage.getItem("stbd_theme") === "dark") {
 }
 $("year").textContent = new Date().getFullYear();
 updateCounts();
-loadSettings();
-loadProducts();
+(async () => {
+  const siteOpen = await loadSettings();
+  if (siteOpen !== false) {
+    loadProducts();
+  }
+})();
 </script>
 </body>
 </html>
