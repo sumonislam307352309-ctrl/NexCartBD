@@ -456,8 +456,8 @@ section { padding: 32px 0; }
   text-decoration: line-through;
   margin-left: 6px;
 }
-.p-actions { display: flex; gap: 7px; margin-top: auto; }
-.p-actions .btn { flex: 1; padding: 9px 6px; font-size: 12.5px; border-radius: 9px; }
+.p-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; align-items: center; }
+.p-actions .btn { flex: 1; padding: 9px 6px; font-size: 12.5px; border-radius: 9px; min-width: 0; }
 
 /* Skeleton */
 .skeleton {
@@ -1853,7 +1853,7 @@ function renderProducts() {
         <div class="p-stock ${inStock ? "in" : "out"}">${inStock ? "✓ স্টকে আছে" : "স্টক নিশ্চিত করুন"}</div>
         <div class="p-price">${money(p.price)}${hasOffer ? `<span class="old">${money(p.old_price)}</span>` : ""}</div>
         <div class="p-actions">
-          ${(!hasVar && isInCart(id)) ? `<button class="btn btn-soft" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>` : `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button>`}
+          ${cartBtnHtml(id, hasVar)}
           <button class="btn btn-outline" data-detail="${safe(id)}">দেখুন</button>
         </div>
       </div>
@@ -1871,8 +1871,18 @@ function addToCart(id) {
   addToCartPlain(id);
 }
 function isInCart(id) {
-  // non-variant product already in cart → show "কার্টে যোগ আছে"
-  return cart.some(x => String(x.id) === String(id) && !x.variantKey);
+  // যেকোনো ভ্যারিয়েন্টসহ এই পণ্য কার্টে আছে কিনা
+  return cart.some(x => String(x.id) === String(id));
+}
+function cartBtnHtml(id, hasVar) {
+  const inCart = isInCart(id);
+  if (!hasVar && inCart) {
+    return `<button class="btn btn-soft" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>`;
+  }
+  if (hasVar && inCart) {
+    return `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button><span style="font-size:11px;color:var(--ok);font-weight:700;width:100%;text-align:center;margin-top:2px">✓ কার্টে যোগ আছে</span>`;
+  }
+  return `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button>`;
 }
 
 function toggleWish(id) {
@@ -1984,11 +1994,9 @@ function openProduct(id) {
     <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:16px">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</p>
     ${directOrderMode
       ? `<button class="btn btn-primary btn-full" id="directOrderBtn">🛍️ অর্ডার করুন</button>`
-      : (hasVar
-          ? `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`
-          : (isInCart(p.id)
-              ? `<button class="btn btn-soft btn-full" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>`
-              : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`))}
+      : (isInCart(p.id) && !hasVar
+          ? `<button class="btn btn-soft btn-full" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>`
+          : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>${isInCart(p.id) ? `<p style="text-align:center;font-size:13px;color:var(--ok);font-weight:700;margin-top:8px">✓ কার্টে যোগ আছে</p>` : ""}`)}
     <button class="btn btn-soft btn-full" data-wish="${safe(p.id)}" style="margin-top:8px">${wishlist.includes(String(p.id)) ? "❤️ উইশলিস্ট থেকে সরাও" : "♡ উইশলিস্টে রাখুন"}</button>
     <button class="btn btn-outline btn-full" id="shareProductBtn" style="margin-top:8px">🔗 লিংক কপি করুন</button>`;
   openOverlay("productModal");
