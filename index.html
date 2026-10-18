@@ -1875,12 +1875,9 @@ function isInCart(id) {
   return cart.some(x => String(x.id) === String(id));
 }
 function cartBtnHtml(id, hasVar) {
-  const inCart = isInCart(id);
-  if (!hasVar && inCart) {
+  // কার্টে থাকলে + কার্ট বাটন থাকবে না — শুধু "কার্টে যোগ আছে"
+  if (isInCart(id)) {
     return `<button class="btn btn-soft" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>`;
-  }
-  if (hasVar && inCart) {
-    return `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button><span style="font-size:11px;color:var(--ok);font-weight:700;width:100%;text-align:center;margin-top:2px">✓ কার্টে যোগ আছে</span>`;
   }
   return `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button>`;
 }
@@ -1994,9 +1991,10 @@ function openProduct(id) {
     <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:16px">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</p>
     ${directOrderMode
       ? `<button class="btn btn-primary btn-full" id="directOrderBtn">🛍️ অর্ডার করুন</button>`
-      : (isInCart(p.id) && !hasVar
-          ? `<button class="btn btn-soft btn-full" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>`
-          : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>${isInCart(p.id) ? `<p style="text-align:center;font-size:13px;color:var(--ok);font-weight:700;margin-top:8px">✓ কার্টে যোগ আছে</p>` : ""}`)}
+      : (isInCart(p.id)
+          ? `<p style="text-align:center;font-size:13px;color:var(--ok);font-weight:700;margin-bottom:10px">✓ এই পণ্য কার্টে যোগ আছে</p>
+             <button class="btn btn-primary btn-full" id="orderFromDetailBtn">🛍️ অর্ডার করুন</button>`
+          : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`)}
     <button class="btn btn-soft btn-full" data-wish="${safe(p.id)}" style="margin-top:8px">${wishlist.includes(String(p.id)) ? "❤️ উইশলিস্ট থেকে সরাও" : "♡ উইশলিস্টে রাখুন"}</button>
     <button class="btn btn-outline btn-full" id="shareProductBtn" style="margin-top:8px">🔗 লিংক কপি করুন</button>`;
   openOverlay("productModal");
@@ -2006,6 +2004,12 @@ function openProduct(id) {
       img.parentNode.querySelectorAll("img").forEach(x => x.classList.remove("active"));
       img.classList.add("active");
     });
+  });
+
+  // Already in cart → go to checkout / order
+  $("orderFromDetailBtn")?.addEventListener("click", () => {
+    closeOverlay("productModal");
+    openCheckout();
   });
 
   // Direct order from product link
