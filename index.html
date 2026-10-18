@@ -307,7 +307,7 @@ section { padding: 32px 0; }
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding: 6px 4px 10px;
   scrollbar-width: thin;
 }
 .cat-chip {
@@ -326,7 +326,8 @@ section { padding: 32px 0; }
   transition: all .2s;
   color: var(--text);
 }
-.cat-chip .em { font-size: 26px; line-height: 1; }
+.cat-chip .em { font-size: 26px; line-height: 1; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; }
+.cat-chip .em img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
 .cat-chip:hover, .cat-chip.active {
   border-color: var(--primary);
   background: var(--primary-soft);
@@ -1152,36 +1153,42 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
 
 <footer>
   <div class="wrap">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px">
-            <path d="M7 18C7 18.55 7.45 19 8 19C8.55 19 9 18.55 9 18C9 17.45 8.55 17 8 17C7.45 17 7 17.45 7 18Z" fill="#00D4C8"/>
-            <path d="M17 18C17 18.55 17.45 19 18 19C18.55 19 19 18.55 19 18C19 17.45 18.55 17 18 17C17.45 17 17 17.45 17 18Z" fill="#00D4C8"/>
-            <path d="M7.16 14H18.41C18.92 14 19.36 13.64 19.47 13.14L20.95 6.14C21.02 5.82 20.95 5.49 20.75 5.24C20.55 5 20.24 4.85 19.91 4.85H6.21L5.77 2.82C5.66 2.33 5.22 2 4.71 2H2V4H4.21L6.71 15.47C6.82 15.97 7.26 16.33 7.77 16.33H19V14.33H8.21L7.16 14Z" fill="#00D4C8"/>
-          </svg>
-          NexCart<span>BD</span>
+    <div id="footerDynamic">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px">
+              <path d="M7 18C7 18.55 7.45 19 8 19C8.55 19 9 18.55 9 18C9 17.45 8.55 17 8 17C7.45 17 7 17.45 7 18Z" fill="#00D4C8"/>
+              <path d="M17 18C17 18.55 17.45 19 18 19C18.55 19 19 18.55 19 18C19 17.45 18.55 17 18 17C17.45 17 17 17.45 17 18Z" fill="#00D4C8"/>
+              <path d="M7.16 14H18.41C18.92 14 19.36 13.64 19.47 13.14L20.95 6.14C21.02 5.82 20.95 5.49 20.75 5.24C20.55 5 20.24 4.85 19.91 4.85H6.21L5.77 2.82C5.66 2.33 5.22 2 4.71 2H2V4H4.21L6.71 15.47C6.82 15.97 7.26 16.33 7.77 16.33H19V14.33H8.21L7.16 14Z" fill="#00D4C8"/>
+            </svg>
+            NexCart<span>BD</span>
+          </div>
+          <p id="ftLine1">Your Everyday Shopping Destination.</p>
+          <p id="ftLine2" style="margin-top:6px;opacity:.85">Shop smart. Shop easy. Shop with confidence.</p>
         </div>
-        <p>Everything You Need, One Cart. বাংলাদেশের বিশ্বস্ত অনলাইন স্টোর — সহজ অর্ডার, দ্রুত ডেলিভারি।</p>
+        <div>
+          <h4>কুইক লিংক</h4>
+          <div id="ftQuickLinks"></div>
+        </div>
+        <div>
+          <h4>কাস্টমার সার্ভিস</h4>
+          <div id="ftServiceLinks"></div>
+        </div>
+        <div>
+          <h4>যোগাযোগ</h4>
+          <div id="ftContactBlock"></div>
+        </div>
       </div>
-      <div>
-        <h4>কুইক লিংক</h4>
-        <a href="#home">হোম</a><br>
-        <a href="#products">সব পণ্য</a><br>
-        <a href="#categories">ক্যাটাগরি</a><br>
-        <a href="#offers">অফার</a>
-      </div>
-      <div>
-        <h4>সাপোর্ট</h4>
-        <a href="#" id="footerOrders">আমার অর্ডার</a><br>
-        <a href="https://wa.me/8801307352309" target="_blank" rel="noopener">WhatsApp চ্যাট</a><br>
-        <a href="https://wa.me/8801307352309" target="_blank" rel="noopener">অর্ডার ট্র্যাক</a>
-      </div>
-      <div>
-        <h4>যোগাযোগ</h4>
-        <p data-wa-text>📱 01307-352309</p>
-        <p>💬 WhatsApp সাপোর্ট</p>
-        <p>🕒 সকাল ১০টা – রাত ১০টা</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:8px 0 28px;border-top:1px solid rgba(255,255,255,.08);margin-top:8px" id="ftExtraRow">
+        <div>
+          <h4>আমাদের সম্পর্কে</h4>
+          <div id="ftAboutLinks"></div>
+        </div>
+        <div>
+          <h4>ফলো করুন</h4>
+          <div id="ftSocialLinks" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:4px"></div>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1222,6 +1229,18 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
       <button class="close-btn" data-close="productModal">✕</button>
     </div>
     <div id="productDetail"></div>
+  </div>
+</div>
+
+<!-- Variant Select Modal -->
+<div class="modal-wrap" id="variantModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head">
+      <strong id="variantModalTitle">কার্টে যোগ করুন</strong>
+      <button class="close-btn" data-close="variantModal">✕</button>
+    </div>
+    <div id="variantModalBody"></div>
+    <button class="btn btn-primary btn-full" id="variantConfirmBtn" style="margin-top:16px">কার্টে যোগ করুন</button>
   </div>
 </div>
 
@@ -1348,6 +1367,8 @@ const BD_GEO = {"ঢাকা":["ধামরাই","দোহার","কে�
 let products = [], cart = [], wishlist = [], paymentMethods = [], category = "সব", searchText = "", checkoutDraft = null, WHATSAPP = "8801307352309", toastTimer;
 let directOrderMode = false; // true when opened via product deep link ?id=
 let SHIP_DHAKA = 60, SHIP_OUTSIDE = 120;
+let storeCategories = []; // [{ name, icon }]
+let footerSettings = null;
 
 try {
   cart = JSON.parse(localStorage.getItem("stbd_cart") || "[]");
@@ -1367,6 +1388,127 @@ function notify(msg) {
   toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
 }
 function byId(id) { return products.find(p => String(p.id) === String(id)); }
+function hasProductVariants(p) {
+  return p && p.variants && p.variants.enabled && Array.isArray(p.variants.options) && p.variants.options.length > 0;
+}
+function productTotalStock(p) {
+  if (!hasProductVariants(p)) return Number(p?.stock) || 0;
+  return (p.variants.skus || []).reduce((s, x) => s + (Number(x.stock) || 0), 0);
+}
+function variantLabel(options, key) {
+  const parts = String(key || "").split("|");
+  return (options || []).map((o, i) => o.name + ": " + (parts[i] || "—")).join(" · ");
+}
+function getVariantStock(p, key) {
+  if (!hasProductVariants(p)) return Number(p?.stock) || 0;
+  const sku = (p.variants.skus || []).find(s => s.key === key);
+  return sku ? (Number(sku.stock) || 0) : 0;
+}
+let _pendingVariantProductId = null;
+let _variantSelections = {};
+
+function openVariantPicker(id) {
+  const p = byId(id);
+  if (!p || !hasProductVariants(p)) {
+    addToCartPlain(id);
+    return;
+  }
+  _pendingVariantProductId = String(id);
+  _variantSelections = {};
+  const opts = p.variants.options;
+  $("variantModalTitle").textContent = (p.name || "পণ্য") + " — কার্টে যোগ করুন";
+  $("variantModalBody").innerHTML = opts.map((opt, oi) => `
+    <div style="margin-bottom:14px">
+      <div style="font-weight:700;font-size:13px;margin-bottom:8px">${safe(opt.name)} *</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px" data-vopt="${safe(opt.name)}">
+        ${(opt.values || []).map(v => {
+          // check if any sku containing this value for this option has stock > 0 (approximate)
+          return `<button type="button" class="btn btn-outline" style="padding:8px 14px;font-size:13px" data-vname="${safe(opt.name)}" data-vval="${safe(v)}">${safe(v)}</button>`;
+        }).join("")}
+      </div>
+    </div>
+  `).join("") + `<p id="variantStockHint" style="font-size:13px;color:var(--muted);margin-top:4px"></p>`;
+
+  $("variantModalBody").querySelectorAll("[data-vname]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const name = btn.dataset.vname;
+      const val = btn.dataset.vval;
+      _variantSelections[name] = val;
+      // highlight
+      btn.parentNode.querySelectorAll("button").forEach(b => {
+        b.classList.remove("btn-primary");
+        b.classList.add("btn-outline");
+      });
+      btn.classList.remove("btn-outline");
+      btn.classList.add("btn-primary");
+      updateVariantStockHint(p);
+    });
+  });
+  openOverlay("variantModal");
+}
+
+function updateVariantStockHint(p) {
+  const opts = p.variants.options;
+  const allSelected = opts.every(o => _variantSelections[o.name]);
+  const hint = $("variantStockHint");
+  if (!allSelected) {
+    if (hint) hint.textContent = "সবগুলো সিলেক্ট করুন";
+    return;
+  }
+  const key = opts.map(o => _variantSelections[o.name]).join("|");
+  const st = getVariantStock(p, key);
+  if (hint) {
+    hint.textContent = st > 0 ? `✓ স্টকে আছে (${st} পিস)` : "⚠ এই কম্বিনেশনের স্টক নেই";
+    hint.style.color = st > 0 ? "var(--success)" : "var(--danger)";
+  }
+}
+
+function confirmVariantAdd() {
+  const id = _pendingVariantProductId;
+  const p = byId(id);
+  if (!p || !hasProductVariants(p)) return;
+  const opts = p.variants.options;
+  for (const o of opts) {
+    if (!_variantSelections[o.name]) {
+      notify("আগে " + o.name + " সিলেক্ট করুন");
+      return;
+    }
+  }
+  const key = opts.map(o => _variantSelections[o.name]).join("|");
+  const st = getVariantStock(p, key);
+  if (st <= 0) {
+    notify("এই কম্বিনেশনের স্টক নেই");
+    return;
+  }
+  const label = variantLabel(opts, key);
+  // same product + same variant = increase qty
+  const existing = cart.find(x => String(x.id) === String(id) && x.variantKey === key);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ id: String(id), qty: 1, variantKey: key, variantLabel: label });
+  }
+  save(); updateCounts();
+  closeOverlay("variantModal");
+  if ($("cartOverlay").classList.contains("show")) renderCart();
+  renderProducts();
+  notify("🛒 কার্টে যোগ হয়েছে! (" + label + ")");
+}
+
+function addToCartPlain(id) {
+  id = String(id);
+  if (cart.find(x => String(x.id) === id && !x.variantKey)) {
+    notify("এই পণ্য ইতিমধ্যে কার্টে যোগ আছে");
+    renderProducts();
+    return;
+  }
+  cart.push({ id, qty: 1 });
+  save(); updateCounts();
+  if ($("cartOverlay").classList.contains("show")) renderCart();
+  renderProducts();
+  notify("🛒 কার্টে যোগ হয়েছে!");
+}
+
 function cartQty() { return cart.reduce((s, i) => s + i.qty, 0); }
 function cartSub() {
   return cart.reduce((s, i) => { const p = byId(i.id); return s + (p ? Number(p.price) * i.qty : 0); }, 0);
@@ -1485,6 +1627,41 @@ async function loadSettings() {
       ];
     }
 
+    // Favicon
+    let fav = map.favicon;
+    if (typeof fav === "string") { try { fav = JSON.parse(fav); } catch (e) {} }
+    const favUrl = (typeof fav === "string" ? fav : String(fav || "")).replace(/"/g, "").trim();
+    if (favUrl && /^https?:\/\//i.test(favUrl)) {
+      let link = document.querySelector("link[rel='icon']") || document.querySelector("link[rel='shortcut icon']");
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = "icon";
+        document.head.appendChild(link);
+      }
+      link.href = favUrl;
+      let apple = document.querySelector("link[rel='apple-touch-icon']");
+      if (!apple) {
+        apple = document.createElement("link");
+        apple.rel = "apple-touch-icon";
+        document.head.appendChild(apple);
+      }
+      apple.href = favUrl;
+    }
+
+    // Categories with icons
+    let cats = map.categories;
+    if (typeof cats === "string") { try { cats = JSON.parse(cats); } catch (e) { cats = []; } }
+    storeCategories = Array.isArray(cats) ? cats.map(c => ({
+      name: String(c.name || c || "").trim(),
+      icon: String(c.icon || "").trim()
+    })).filter(c => c.name) : [];
+
+    // Footer
+    let ft = map.footer;
+    if (typeof ft === "string") { try { ft = JSON.parse(ft); } catch (e) { ft = null; } }
+    footerSettings = (ft && typeof ft === "object") ? ft : null;
+    applyFooter();
+
     // Site open / closed
     let site = map.site_status;
     if (typeof site === "string") { try { site = JSON.parse(site); } catch (e) { site = null; } }
@@ -1539,13 +1716,93 @@ async function loadProducts() {
   }
 }
 
+function catIconHtml(name) {
+  if (name === "সব") return "✨";
+  const found = storeCategories.find(c => c.name === name);
+  if (found && found.icon && /^https?:\/\//i.test(found.icon)) {
+    return `<img src="${safe(found.icon)}" alt="" loading="lazy" onerror="this.parentNode.textContent='📦'">`;
+  }
+  const em = { "অডিও": "🎧", "মোবাইল": "📱", "কম্পিউটার": "💻", "অ্যাক্সেসরিজ": "⌚", "গেমিং": "🎮", "চার্জার": "🔌", "স্মার্ট ডিভাইস": "📡" };
+  return em[name] || "📦";
+}
 function renderCategories() {
-  const cats = ["সব", ...new Set(products.map(p => p.category).filter(Boolean))];
-  const em = { "সব": "✨", "অডিও": "🎧", "মোবাইল": "📱", "কম্পিউটার": "💻", "অ্যাক্সেসরিজ": "⌚", "গেমিং": "🎮", "চার্জার": "🔌", "স্মার্ট ডিভাইস": "📡" };
+  const fromProducts = products.map(p => p.category).filter(Boolean);
+  const fromSettings = storeCategories.map(c => c.name);
+  const names = [...new Set([...fromSettings, ...fromProducts])];
+  const cats = ["সব", ...names];
   $("categoryGrid").innerHTML = cats.map(c => `
     <button class="cat-chip ${category === c ? "active" : ""}" data-category="${safe(c)}">
-      <span class="em">${em[c] || "📦"}</span><span>${safe(c)}</span>
+      <span class="em">${catIconHtml(c)}</span><span>${safe(c)}</span>
     </button>`).join("");
+}
+
+function renderFooterLinks(containerId, links, extraHtml) {
+  const el = $(containerId);
+  if (!el) return;
+  const items = (links || []).filter(l => l && l.label);
+  if (!items.length && !extraHtml) {
+    el.innerHTML = "";
+    return;
+  }
+  el.innerHTML = items.map(l => {
+    const url = l.url || "#";
+    const isOrders = /অর্ডার|order/i.test(l.label) && (url === "#" || url === "#orders");
+    if (isOrders) return `<a href="#" class="ft-orders-link">${safe(l.label)}</a><br>`;
+    const external = /^https?:\/\//i.test(url);
+    return `<a href="${safe(url)}" ${external ? 'target="_blank" rel="noopener"' : ""}>${safe(l.label)}</a><br>`;
+  }).join("") + (extraHtml || "");
+}
+
+function applyFooter() {
+  const ft = footerSettings || {};
+  if ($("ftLine1")) $("ftLine1").textContent = ft.tagline1 || "Your Everyday Shopping Destination.";
+  if ($("ftLine2")) $("ftLine2").textContent = ft.tagline2 || "Shop smart. Shop easy. Shop with confidence.";
+
+  const quick = ft.quick_links && ft.quick_links.length ? ft.quick_links : [
+    { label: "হোম", url: "#home" },
+    { label: "সব পণ্য", url: "#products" },
+    { label: "ক্যাটাগরি", url: "#categories" },
+    { label: "অফার", url: "#offers" }
+  ];
+  const service = ft.service_links && ft.service_links.length ? ft.service_links : [
+    { label: "আমার অর্ডার", url: "#orders" },
+    { label: "WhatsApp সাপোর্ট", url: "https://wa.me/" + WHATSAPP },
+    { label: "অর্ডার ট্র্যাক", url: "https://wa.me/" + WHATSAPP }
+  ];
+  const about = ft.about_links && ft.about_links.length ? ft.about_links : [
+    { label: "প্রাইভেসি পলিসি", url: "#" },
+    { label: "টার্মস ও কন্ডিশন", url: "#" }
+  ];
+
+  renderFooterLinks("ftQuickLinks", quick);
+  renderFooterLinks("ftServiceLinks", service);
+  renderFooterLinks("ftAboutLinks", about);
+
+  const contact = $("ftContactBlock");
+  if (contact) {
+    const email = ft.email || "";
+    const loc = ft.location || "Bangladesh";
+    const prettyWa = WHATSAPP.replace(/^880/, "0");
+    contact.innerHTML = `
+      ${email ? `<p>📧 ${safe(email)}</p>` : ""}
+      <p data-wa-text>📱 ${safe(prettyWa)}</p>
+      <p>📍 ${safe(loc)}</p>
+      <p>💬 WhatsApp সাপোর্ট</p>
+    `;
+  }
+
+  const social = $("ftSocialLinks");
+  if (social) {
+    const items = [];
+    if (ft.facebook) items.push(`<a href="${safe(ft.facebook)}" target="_blank" rel="noopener">Facebook</a>`);
+    if (ft.instagram) items.push(`<a href="${safe(ft.instagram)}" target="_blank" rel="noopener">Instagram</a>`);
+    if (ft.youtube) items.push(`<a href="${safe(ft.youtube)}" target="_blank" rel="noopener">YouTube</a>`);
+    social.innerHTML = items.length ? items.join("") : `<span style="color:#64748b;font-size:13px">লিংক অ্যাডমিন থেকে সেট করুন</span>`;
+  }
+
+  document.querySelectorAll(".ft-orders-link").forEach(a => {
+    a.addEventListener("click", e => { e.preventDefault(); openOrdersModal(); });
+  });
 }
 
 function renderProducts() {
@@ -1578,8 +1835,10 @@ function renderProducts() {
   $("productGrid").innerHTML = list.map(p => {
     const id = String(p.id);
     const wished = wishlist.includes(id);
-    const inStock = Number(p.stock) > 0;
+    const stockNum = productTotalStock(p);
+    const inStock = stockNum > 0;
     const hasOffer = p.old_price && p.old_price > p.price;
+    const hasVar = hasProductVariants(p);
     const tag = p.featured ? `<span class="p-tag featured">ফিচার্ড</span>` : (hasOffer ? `<span class="p-tag offer">অফার</span>` : "");
     return `
     <article class="product">
@@ -1594,7 +1853,7 @@ function renderProducts() {
         <div class="p-stock ${inStock ? "in" : "out"}">${inStock ? "✓ স্টকে আছে" : "স্টক নিশ্চিত করুন"}</div>
         <div class="p-price">${money(p.price)}${hasOffer ? `<span class="old">${money(p.old_price)}</span>` : ""}</div>
         <div class="p-actions">
-          ${isInCart(id) ? `<button class="btn btn-soft" disabled style="opacity:.85">✓ কার্টে আছে</button>` : `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button>`}
+          ${(!hasVar && isInCart(id)) ? `<button class="btn btn-soft" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>` : `<button class="btn btn-primary" data-add="${safe(id)}">＋ কার্ট</button>`}
           <button class="btn btn-outline" data-detail="${safe(id)}">দেখুন</button>
         </div>
       </div>
@@ -1604,18 +1863,17 @@ function renderProducts() {
 
 function addToCart(id) {
   id = String(id);
-  if (cart.find(x => String(x.id) === id)) {
-    notify("এই পণ্য ইতিমধ্যে কার্টে আছে");
-    renderProducts();
+  const p = byId(id);
+  if (hasProductVariants(p)) {
+    openVariantPicker(id);
     return;
   }
-  cart.push({ id, qty: 1 });
-  save(); updateCounts();
-  if ($("cartOverlay").classList.contains("show")) renderCart();
-  renderProducts();
-  notify("🛒 কার্টে যোগ হয়েছে!");
+  addToCartPlain(id);
 }
-function isInCart(id) { return cart.some(x => String(x.id) === String(id)); }
+function isInCart(id) {
+  // non-variant product already in cart → show "কার্টে যোগ আছে"
+  return cart.some(x => String(x.id) === String(id) && !x.variantKey);
+}
 
 function toggleWish(id) {
   id = String(id);
@@ -1624,11 +1882,13 @@ function toggleWish(id) {
   save(); updateCounts(); renderProducts();
   if ($("wishOverlay").classList.contains("show")) renderWishlist();
 }
-function changeQty(id, d) {
-  const item = cart.find(x => String(x.id) === String(id));
+function changeQty(id, d, variantKey) {
+  const item = cart.find(x => String(x.id) === String(id) && String(x.variantKey || "") === String(variantKey || ""));
   if (!item) return;
   item.qty += d;
-  if (item.qty <= 0) cart = cart.filter(x => String(x.id) !== String(id));
+  if (item.qty <= 0) {
+    cart = cart.filter(x => !(String(x.id) === String(id) && String(x.variantKey || "") === String(variantKey || "")));
+  }
   save(); updateCounts(); renderCart();
 }
 
@@ -1641,17 +1901,19 @@ function renderCart() {
   }
   box.innerHTML = cart.map(item => {
     const p = byId(item.id); if (!p) return "";
+    const vk = item.variantKey || "";
     return `<div class="cart-row">
       <img src="${safe(imgOf(p))}" alt="" onerror="this.src='https://placehold.co/100?text=ST'">
       <div>
         <h4>${safe(p.name)}</h4>
+        ${item.variantLabel ? `<div style="font-size:12px;color:var(--primary);font-weight:600;margin:2px 0">${safe(item.variantLabel)}</div>` : ""}
         <div class="unit">${money(p.price)}</div>
         <div class="qty-ctrl">
-          <button data-qty="${safe(p.id)}" data-delta="-1" aria-label="কমান">−</button>
+          <button data-qty="${safe(p.id)}" data-vkey="${safe(vk)}" data-delta="-1" aria-label="কমান">−</button>
           <span style="min-width:20px;text-align:center;font-weight:600">${item.qty}</span>
-          <button data-qty="${safe(p.id)}" data-delta="1" aria-label="বাড়ান">+</button>
+          <button data-qty="${safe(p.id)}" data-vkey="${safe(vk)}" data-delta="1" aria-label="বাড়ান">+</button>
         </div>
-        <button class="rm-btn" data-remove="${safe(p.id)}">সরিয়ে ফেলুন</button>
+        <button class="rm-btn" data-remove="${safe(p.id)}" data-vkey="${safe(vk)}">সরিয়ে ফেলুন</button>
       </div>
       <strong style="font-size:14px">${money(Number(p.price) * item.qty)}</strong>
     </div>`;
@@ -1704,7 +1966,9 @@ function openProduct(id) {
   const p = byId(id); if (!p) return;
   const imgs = Array.isArray(p.images) && p.images.length ? p.images : [imgOf(p)];
   const hasOffer = p.old_price && p.old_price > p.price;
-  const inStock = Number(p.stock) > 0;
+  const stockNum = productTotalStock(p);
+  const inStock = stockNum > 0;
+  const hasVar = hasProductVariants(p);
 
   // Update browser URL so the product is shareable
   const shareUrl = getProductLink(p.id);
@@ -1716,11 +1980,15 @@ function openProduct(id) {
     <div class="p-cat">${safe(p.category || "অন্যান্য")}</div>
     <h2 style="font-size:20px;margin:6px 0 8px;font-weight:800">${safe(p.name)}</h2>
     <div class="p-price" style="margin-bottom:10px">${money(p.price)}${hasOffer ? `<span class="old">${money(p.old_price)}</span>` : ""}</div>
-    <div class="p-stock ${inStock ? "in" : "out"}" style="margin-bottom:12px">${inStock ? "✓ স্টকে আছে (" + p.stock + " পিস)" : "স্টক নিশ্চিত করুন"}</div>
+    <div class="p-stock ${inStock ? "in" : "out"}" style="margin-bottom:12px">${inStock ? "✓ স্টকে আছে (" + stockNum + " পিস)" : "স্টক নিশ্চিত করুন"}</div>
     <p style="color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:16px">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</p>
     ${directOrderMode
       ? `<button class="btn btn-primary btn-full" id="directOrderBtn">🛍️ অর্ডার করুন</button>`
-      : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`}
+      : (hasVar
+          ? `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`
+          : (isInCart(p.id)
+              ? `<button class="btn btn-soft btn-full" disabled style="opacity:.85">✓ কার্টে যোগ আছে</button>`
+              : `<button class="btn btn-primary btn-full" data-add="${safe(p.id)}">🛒 কার্টে যোগ করুন</button>`))}
     <button class="btn btn-soft btn-full" data-wish="${safe(p.id)}" style="margin-top:8px">${wishlist.includes(String(p.id)) ? "❤️ উইশলিস্ট থেকে সরাও" : "♡ উইশলিস্টে রাখুন"}</button>
     <button class="btn btn-outline btn-full" id="shareProductBtn" style="margin-top:8px">🔗 লিংক কপি করুন</button>`;
   openOverlay("productModal");
@@ -1734,6 +2002,12 @@ function openProduct(id) {
 
   // Direct order from product link
   $("directOrderBtn")?.addEventListener("click", () => {
+    if (hasVar) {
+      closeOverlay("productModal");
+      openVariantPicker(p.id);
+      // After variant add, user can go to checkout from cart
+      return;
+    }
     cart = [{ id: String(p.id), qty: 1 }];
     save();
     updateCounts();
@@ -1922,9 +2196,11 @@ document.addEventListener("click", e => {
   if (add) { addToCart(add.dataset.add); return; }
   if (wish) { toggleWish(wish.dataset.wish); return; }
   if (detail) { directOrderMode = false; openProduct(detail.dataset.detail); return; }
-  if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta)); return; }
+  if (qty) { changeQty(qty.dataset.qty, Number(qty.dataset.delta), qty.dataset.vkey || ""); return; }
   if (remove) {
-    cart = cart.filter(x => String(x.id) !== String(remove.dataset.remove));
+    const rid = remove.dataset.remove;
+    const rvk = remove.dataset.vkey || "";
+    cart = cart.filter(x => !(String(x.id) === String(rid) && String(x.variantKey || "") === String(rvk)));
     save(); updateCounts(); renderCart(); notify("কার্ট আপডেট হয়েছে"); return;
   }
   if (close) { closeOverlay(close.dataset.close); return; }
@@ -1939,6 +2215,7 @@ document.addEventListener("click", e => {
   if (e.target.id === "checkoutBtn") openCheckout();
   if (e.target.id === "lookupOrdersBtn") lookupOrders();
   if (e.target.id === "emptyReset") resetFilters();
+  if (e.target.id === "variantConfirmBtn") { confirmVariantAdd(); return; }
   if (e.target.classList.contains("overlay") || e.target.classList.contains("modal-wrap")) closeOverlay(e.target.id);
 });
 
@@ -2045,7 +2322,11 @@ function showPaymentPicker(customer, methods) {
 }
 
 function showCodConfirm(customer) {
-  const rows = cart.map(i => { const p = byId(i.id); return p ? { ...p, qty: i.qty } : null; }).filter(Boolean);
+  const rows = cart.map(i => {
+    const p = byId(i.id);
+    if (!p) return null;
+    return { name: p.name, qty: i.qty, variantLabel: i.variantLabel || "" };
+  }).filter(Boolean);
   const sub = cartSub();
   const total = sub + customer.shipping;
   $("codConfirmBody").innerHTML = `
@@ -2054,7 +2335,7 @@ function showCodConfirm(customer) {
       <b>${safe(customer.name)}</b> · ${safe(customer.phone)}<br>
       ${safe(customer.address)}, ${safe(customer.upazila)}, ${safe(customer.district)}<br>
       পেমেন্ট: Cash on Delivery<br>
-      ${rows.map(r => `• ${safe(r.name)} × ${r.qty}`).join("<br>")}<br>
+      ${rows.map(r => `• ${safe(r.name)}${r.variantLabel ? " (" + safe(r.variantLabel) + ")" : ""} × ${r.qty}`).join("<br>")}<br>
       <b>মোট: ${money(total)}</b> (ডেলিভারি ${money(customer.shipping)})
     </div>
   `;
@@ -2114,7 +2395,19 @@ $("confirmCodBtn")?.addEventListener("click", () => {
 
 async function finalizeOrder(customer) {
   const fullAddress = customer.address + ", " + customer.upazila + ", " + customer.district;
-  const rows = cart.map(i => { const p = byId(i.id); return p ? { id: p.id, name: p.name, price: Number(p.price), quantity: i.qty } : null; }).filter(Boolean);
+  const rows = cart.map(i => {
+    const p = byId(i.id);
+    if (!p) return null;
+    const name = i.variantLabel ? (p.name + " (" + i.variantLabel + ")") : p.name;
+    return {
+      id: p.id,
+      name,
+      price: Number(p.price),
+      quantity: i.qty,
+      variantKey: i.variantKey || "",
+      variantLabel: i.variantLabel || ""
+    };
+  }).filter(Boolean);
   const subtotal = cartSub();
   const total = subtotal + customer.shipping;
 
