@@ -443,30 +443,14 @@ section { padding: 32px 0; }
 .p-stock { font-size: 11.5px; margin-bottom: 6px; }
 .p-stock.in { color: var(--success); }
 .p-stock.out { color: var(--muted); }
-.desc-wrap { margin-bottom: 16px; }
 .desc-text {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 7.2em;
-  overflow: hidden;
-  transition: max-height .3s ease;
+  margin-bottom: 16px;
 }
-.desc-text.expanded { max-height: none; }
-.desc-more-btn {
-  display: inline-block;
-  margin-top: 6px;
-  padding: 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--primary);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.desc-more-btn:hover { text-decoration: underline; }
 .p-price {
   font-size: 17px;
   font-weight: 800;
@@ -2012,10 +1996,7 @@ function openProduct(id) {
     <h2 style="font-size:20px;margin:6px 0 8px;font-weight:800">${safe(p.name)}</h2>
     <div class="p-price" style="margin-bottom:10px">${money(p.price)}${hasOffer ? `<span class="old">${money(p.old_price)}</span>` : ""}</div>
     <div class="p-stock ${inStock ? "in" : "out"}" style="margin-bottom:12px">${inStock ? "✓ স্টকে আছে" : "স্টক নিশ্চিত করুন"}</div>
-    <div class="desc-wrap" id="descWrap">
-      <div class="desc-text" id="descText">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</div>
-      <button type="button" class="desc-more-btn" id="descMoreBtn" style="display:none">আরও পড়ুন ↓</button>
-    </div>
+    <div class="desc-text">${safe(p.description || "বিস্তারিত জানতে WhatsApp-এ যোগাযোগ করুন।")}</div>
     ${directOrderMode
       ? `<button class="btn btn-primary btn-full" id="directOrderBtn">🛍️ অর্ডার করুন</button>`
       : (isInCart(p.id)
@@ -2032,22 +2013,6 @@ function openProduct(id) {
       img.classList.add("active");
     });
   });
-
-  // Description: show "আরও পড়ুন" only when text is clipped
-  (function setupDescMore() {
-    const textEl = $("descText");
-    const btn = $("descMoreBtn");
-    if (!textEl || !btn) return;
-    requestAnimationFrame(() => {
-      if (textEl.scrollHeight > textEl.clientHeight + 4) {
-        btn.style.display = "inline-block";
-        btn.onclick = () => {
-          const open = textEl.classList.toggle("expanded");
-          btn.textContent = open ? "কম দেখুন ↑" : "আরও পড়ুন ↓";
-        };
-      }
-    });
-  })();
 
   // Already in cart → go to checkout / order
   $("orderFromDetailBtn")?.addEventListener("click", () => {
