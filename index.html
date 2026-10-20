@@ -31,18 +31,37 @@
   --radius-sm: 10px;
   --font: system-ui, -apple-system, "Segoe UI", "Noto Sans Bengali", Arial, sans-serif;
 }
-body.dark {
-  --bg: #0a0f1c;
-  --surface: #111827;
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --line: #1e293b;
-  --primary-soft: #1e1b4b;
-  --shadow: 0 4px 20px rgba(0,0,0,.35);
-  --shadow-lg: 0 20px 50px rgba(0,0,0,.5);
-}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+button, a, .cat-chip, .iconbtn, .product, .trust-item, .benefit, .pay-card,
+.navlinks a, .p-wish, .close-btn, .qty-ctrl button, .thumb-row img, .op-back,
+.order-summary-card, .orders-back-btn, .btn, input, select, textarea, label {
+  -webkit-tap-highlight-color: transparent;
+}
+button, a, .cat-chip, .iconbtn, .product, .p-wish, .navlinks a, .pay-card,
+.order-summary-card, .op-back, .btn {
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+/* Prevent sticky :hover on touch devices after tap */
+@media (hover: none) {
+  .product:hover,
+  .cat-chip:hover,
+  .iconbtn:hover,
+  .btn:hover,
+  .navlinks a:hover,
+  .trust-item:hover,
+  .benefit:hover,
+  .pay-card:hover,
+  .p-wish:hover,
+  .order-summary-card:hover,
+  .close-btn:hover,
+  .op-back:hover {
+    /* neutralize any residual hover if browser still applies it */
+    transform: none;
+  }
+}
 body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.55; transition: background .3s, color .3s; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; border: none; background: none; }
@@ -60,7 +79,9 @@ img { max-width: 100%; display: block; }
   letter-spacing: .2px;
 }
 .topbar a { color: #a5b4fc; font-weight: 600; margin-left: 6px; }
-.topbar a:hover { text-decoration: underline; }
+@media (hover: hover) and (pointer: fine) {
+  .topbar a:hover { text-decoration: underline; }
+}
 
 /* Header */
 header {
@@ -124,7 +145,20 @@ header {
   transition: all .2s;
   background: var(--surface);
 }
-.iconbtn:hover {
+.iconbtn svg { display: block; }
+.iconbtn#ordersBtn { color: #4f46e5; }
+@media (hover: hover) and (pointer: fine) {
+  .iconbtn#ordersBtn:hover { color: #4338ca; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .iconbtn:hover {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    color: var(--primary);
+  }
+}
+.iconbtn:active {
   border-color: var(--primary);
   background: var(--primary-soft);
   color: var(--primary);
@@ -163,7 +197,10 @@ header {
   white-space: nowrap;
   transition: all .15s;
 }
-.navlinks a:hover { color: var(--primary); background: var(--primary-soft); }
+@media (hover: hover) and (pointer: fine) {
+  .navlinks a:hover { color: var(--primary); background: var(--primary-soft); }
+}
+.navlinks a:active { color: var(--primary); background: var(--primary-soft); }
 
 /* Hero */
 .hero { padding: 28px 0 12px; }
@@ -231,28 +268,38 @@ header {
   transition: all .2s;
 }
 .btn-white { background: #fff; color: #3730a3; }
-.btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.2); }
+}
 .btn-ghost {
   background: rgba(255,255,255,.1);
   color: #fff;
   border: 1.5px solid rgba(255,255,255,.3);
 }
-.btn-ghost:hover { background: rgba(255,255,255,.2); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover { background: rgba(255,255,255,.2); }
+}
 .btn-primary { background: var(--primary); color: #fff; }
-.btn-primary:hover {
-  background: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(79,70,229,.35);
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(79,70,229,.35);
+  }
 }
 .btn-soft { background: var(--primary-soft); color: var(--primary); }
-.btn-soft:hover { filter: brightness(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-soft:hover { filter: brightness(.97); }
+}
 .btn-full { width: 100%; }
 .btn-outline {
   border: 1.5px solid var(--line);
   background: var(--surface);
   color: var(--text);
 }
-.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+@media (hover: hover) and (pointer: fine) {
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+}
 .hero-visual {
   position: relative;
   z-index: 1;
@@ -281,7 +328,9 @@ header {
   text-align: center;
   transition: box-shadow .2s;
 }
-.trust-item:hover { box-shadow: var(--shadow); }
+@media (hover: hover) and (pointer: fine) {
+  .trust-item:hover { box-shadow: var(--shadow); }
+}
 .trust-item .ti { font-size: 22px; margin-bottom: 4px; }
 .trust-item strong { display: block; font-size: 13px; font-weight: 700; }
 .trust-item span { font-size: 11px; color: var(--muted); }
@@ -311,6 +360,7 @@ section { padding: 32px 0; }
   scrollbar-width: thin;
 }
 .cat-chip {
+  position: relative;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -328,12 +378,44 @@ section { padding: 32px 0; }
 }
 .cat-chip .em { font-size: 26px; line-height: 1; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; }
 .cat-chip .em img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
-.cat-chip:hover, .cat-chip.active {
+.cat-chip .cat-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 99px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 6px rgba(225,29,72,.35);
+  line-height: 1;
+}
+.cat-chip {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+.cat-chip.active {
   border-color: var(--primary);
   background: var(--primary-soft);
   color: var(--primary);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(79,70,229,.12);
+}
+@media (hover: hover) and (pointer: fine) {
+  .cat-chip:hover {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79,70,229,.12);
+  }
 }
 
 /* Toolbar */
@@ -369,10 +451,13 @@ section { padding: 32px 0; }
   display: flex;
   flex-direction: column;
 }
-.product:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
-  border-color: transparent;
+@media (hover: hover) and (pointer: fine) {
+  .product:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+  }
+  .product:hover .p-img img { transform: scale(1.05); }
 }
 .p-img {
   position: relative;
@@ -387,7 +472,6 @@ section { padding: 32px 0; }
   object-fit: cover;
   transition: transform .4s;
 }
-.product:hover .p-img img { transform: scale(1.05); }
 .p-tag {
   position: absolute;
   top: 10px;
@@ -415,7 +499,10 @@ section { padding: 32px 0; }
   box-shadow: 0 2px 8px rgba(0,0,0,.1);
   transition: all .2s;
 }
-.p-wish:hover, .p-wish.on { background: #ffe4e6; color: var(--danger); }
+.p-wish.on { background: #ffe4e6; color: var(--danger); }
+@media (hover: hover) and (pointer: fine) {
+  .p-wish:hover { background: #ffe4e6; color: var(--danger); }
+}
 .p-body {
   padding: 14px;
   display: flex;
@@ -543,7 +630,9 @@ section { padding: 32px 0; }
   padding: 22px 18px;
   transition: box-shadow .2s;
 }
-.benefit:hover { box-shadow: var(--shadow); }
+@media (hover: hover) and (pointer: fine) {
+  .benefit:hover { box-shadow: var(--shadow); }
+}
 .benefit .bi { font-size: 28px; margin-bottom: 10px; }
 .benefit b { display: block; font-size: 14.5px; margin-bottom: 5px; }
 .benefit p { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
@@ -571,7 +660,9 @@ footer h4 {
   letter-spacing: .3px;
 }
 footer a, footer p { font-size: 13px; line-height: 2; color: #94a3b8; }
-footer a:hover { color: #a5b4fc; }
+@media (hover: hover) and (pointer: fine) {
+  footer a:hover { color: #a5b4fc; }
+}
 .footer-bottom {
   border-top: 1px solid rgba(255,255,255,.08);
   padding: 16px 0;
@@ -627,7 +718,10 @@ footer a:hover { color: #a5b4fc; }
   font-size: 16px;
   transition: background .15s;
 }
-.close-btn:hover { background: var(--line); }
+@media (hover: hover) and (pointer: fine) {
+  .close-btn:hover { background: var(--line); }
+}
+.close-btn:active { background: var(--line); }
 .drawer-body { flex: 1; overflow-y: auto; padding: 8px 20px 20px; }
 .drawer-foot { padding: 16px 20px; border-top: 1px solid var(--line); flex-shrink: 0; }
 
@@ -659,7 +753,10 @@ footer a:hover { color: #a5b4fc; }
   place-items: center;
   background: var(--surface);
 }
-.qty-ctrl button:hover { border-color: var(--primary); color: var(--primary); }
+@media (hover: hover) and (pointer: fine) {
+  .qty-ctrl button:hover { border-color: var(--primary); color: var(--primary); }
+}
+.qty-ctrl button:active { border-color: var(--primary); color: var(--primary); }
 .rm-btn { font-size: 11.5px; color: var(--danger); margin-top: 4px; padding: 0; }
 .summary-row {
   display: flex;
@@ -730,7 +827,10 @@ footer a:hover { color: #a5b4fc; }
   flex-shrink: 0;
   transition: border .15s;
 }
-.thumb-row img:hover, .thumb-row img.active { border-color: var(--primary); }
+.thumb-row img.active { border-color: var(--primary); }
+@media (hover: hover) and (pointer: fine) {
+  .thumb-row img:hover { border-color: var(--primary); }
+}
 .field { display: block; margin-bottom: 14px; font-size: 13px; font-weight: 600; }
 .field input, .field textarea, .field select {
   display: block;
@@ -802,7 +902,9 @@ footer a:hover { color: #a5b4fc; }
   align-items: center;
   gap: 8px;
 }
-.pay-card:hover { border-color: var(--primary); background: var(--primary-soft); }
+@media (hover: hover) and (pointer: fine) {
+  .pay-card:hover { border-color: var(--primary); background: var(--primary-soft); }
+}
 .pay-card.active {
   border-color: var(--primary);
   background: var(--primary-soft);
@@ -832,25 +934,29 @@ footer a:hover { color: #a5b4fc; }
 }
 
 /* Order Status Timeline */
+/* Order Cards & Tracking */
 .order-card {
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 16px;
-  margin-bottom: 14px;
-  background: var(--bg);
+  margin-bottom: 16px;
+  background: var(--surface);
+  box-shadow: 0 2px 10px rgba(15,23,42,.04);
 }
 .order-card .oh {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.order-card .oid { font-size: 13px; font-weight: 700; color: var(--primary); }
+.order-card .oid { font-size: 14px; font-weight: 800; color: var(--primary); letter-spacing: .3px; }
 .order-card .ost {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
   background: var(--primary-soft);
   color: var(--primary);
 }
@@ -858,69 +964,475 @@ footer a:hover { color: #a5b4fc; }
 .order-card .ost.cancel { background: var(--danger-bg); color: var(--danger); }
 .order-card .ost.ship { background: #dbeafe; color: #1d4ed8; }
 .order-card .ost.proc { background: var(--warning-bg); color: var(--warning); }
-.order-card .oi { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-/* Status Timeline */
-.status-timeline {
+.order-card .o-date {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.order-items-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.order-item-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  background: var(--bg);
+  border-radius: 12px;
+}
+.order-item-row img {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #e2e8f0;
+}
+.order-item-row .oi-name { font-size: 13.5px; font-weight: 700; line-height: 1.35; margin-bottom: 2px; }
+.order-item-row .oi-var { font-size: 12px; color: var(--primary); font-weight: 600; margin-bottom: 2px; }
+.order-item-row .oi-meta { font-size: 12px; color: var(--muted); }
+.order-item-row .oi-price { font-size: 13.5px; font-weight: 800; color: var(--text); white-space: nowrap; }
+.order-summary-box {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.order-summary-box .os-row {
   display: flex;
   justify-content: space-between;
-  margin: 16px 0 8px;
+  gap: 10px;
+}
+.order-summary-box .os-total {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+.order-summary-box .os-label { font-weight: 600; color: var(--text); }
+.order-pay-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.order-pay-badge.cod { background: #e0e7ff; color: #4338ca; }
+.order-pay-badge.paid { background: var(--success-bg); color: var(--success); }
+.order-pay-badge.pending { background: var(--warning-bg); color: var(--warning); }
+
+/* Tracking section — vertical timeline like reference */
+.tracking-section {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.tracking-section h4 {
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+}
+.track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   position: relative;
-  padding: 0 4px;
+  padding-left: 2px;
 }
-.status-timeline::before {
-  content: "";
-  position: absolute;
-  top: 12px;
-  left: 20px;
-  right: 20px;
-  height: 3px;
-  background: var(--line);
-  z-index: 0;
+.track-step {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 14px;
+  position: relative;
+  padding-bottom: 22px;
 }
-.status-step {
+.track-step:last-child { padding-bottom: 0; }
+.track-step .ts-rail {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  z-index: 1;
-  flex: 1;
+  position: relative;
 }
-.status-dot {
-  width: 26px;
-  height: 26px;
+.track-step .ts-dot {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: var(--line);
+  background: #e2e8f0;
+  color: #94a3b8;
   display: grid;
   place-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  z-index: 1;
+  flex-shrink: 0;
+  border: 3px solid var(--surface);
+  transition: all .2s;
+}
+.track-step .ts-dot svg {
+  display: block;
+  flex-shrink: 0;
+}
+.track-step .ts-line {
+  width: 3px;
+  flex: 1;
+  min-height: 22px;
+  background: #e2e8f0;
+  margin-top: 3px;
+  border-radius: 2px;
+}
+.track-step:last-child .ts-line { display: none; }
+.track-step.done .ts-dot {
+  background: #22c55e;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(34,197,94,.15);
+}
+.track-step.done .ts-line { background: #22c55e; }
+.track-step.current .ts-dot {
+  background: #22c55e;
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(34,197,94,.2);
+}
+.track-step.current .ts-line { background: #e2e8f0; }
+.track-step .ts-body { padding-top: 4px; min-width: 0; }
+.track-step .ts-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #94a3b8;
+  margin-bottom: 4px;
+  letter-spacing: -.2px;
+}
+.track-step.done .ts-title,
+.track-step.current .ts-title { color: var(--text); }
+.track-step .ts-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 4px;
+}
+.track-step.current .ts-desc { color: var(--text); }
+.track-step .ts-badge {
+  display: inline-block;
   font-size: 12px;
   font-weight: 700;
-  color: var(--muted);
-  border: 3px solid var(--surface);
+  color: #16a34a;
+  margin-top: 2px;
 }
-.status-step.done .status-dot {
-  background: var(--success);
-  color: #fff;
-}
-.status-step.current .status-dot {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 0 0 4px rgba(79,70,229,.2);
-}
-.status-step span {
-  font-size: 10px;
+.track-step:not(.done):not(.current) .ts-badge { display: none; }
+.track-step.current .ts-badge { color: #16a34a; }
+
+.track-cancel-note {
+  background: var(--danger-bg);
+  color: var(--danger);
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 13.5px;
   font-weight: 600;
-  color: var(--muted);
+  margin-top: 8px;
   text-align: center;
-  line-height: 1.3;
 }
-.status-step.done span, .status-step.current span { color: var(--text); }
+.orders-modal-wide { width: min(560px, 100%); max-height: 92vh; }
+.orders-search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.orders-search-row input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  outline: none;
+  font-size: 15px;
+}
+.orders-search-row input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+}
+.orders-hint {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+
+/* ===== My Orders PAGE (full page, not modal) ===== */
+#ordersPage {
+  display: none;
+  min-height: 100vh;
+  background: var(--bg);
+  padding-bottom: 40px;
+}
+#ordersPage.show { display: block; }
+.op-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+  box-shadow: 0 1px 0 var(--line);
+}
+.op-header-inner {
+  width: min(640px, 92%);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.op-back {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all .15s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .op-back:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+}
+.op-back:active { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+.op-header h1 {
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -.2px;
+}
+.op-body {
+  width: min(640px, 92%);
+  margin: 0 auto;
+  padding: 22px 0 0;
+}
+.op-search-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 20px rgba(15,23,42,.06);
+}
+.op-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.op-hero-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--primary-soft);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.op-hero-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.3px;
+  line-height: 1.25;
+}
+.op-hero-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+.op-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 0 0 18px;
+}
+.op-field-label {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.op-phone-input {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  outline: none;
+  font-size: 16px;
+  margin-bottom: 14px;
+  transition: border .2s, box-shadow .2s;
+}
+.op-phone-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.12);
+}
+.op-lookup-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 18px !important;
+  font-size: 15.5px !important;
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+}
+
+/* Summary cards — screenshot style (light theme) */
+.order-summary-card {
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background: var(--surface);
+  transition: box-shadow .2s, border-color .2s;
+}
+@media (hover: hover) and (pointer: fine) {
+  .order-summary-card:hover {
+    border-color: rgba(79,70,229,.3);
+    box-shadow: 0 6px 20px rgba(15,23,42,.07);
+  }
+}
+.osc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.osc-id { font-size: 14.5px; font-weight: 800; color: var(--text); letter-spacing: .2px; }
+.osc-body {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 14px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+.osc-body img {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.osc-info { min-width: 0; }
+.osc-products {
+  font-size: 15px;
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.osc-meta-line {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 2px;
+}
+.osc-total {
+  font-weight: 800;
+  color: var(--text);
+  font-size: 22px;
+  margin-top: 8px;
+  letter-spacing: -.3px;
+}
+.osc-actions { display: flex; gap: 8px; }
+.osc-actions .btn {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 14px;
+  border-radius: 99px;
+  font-weight: 700;
+}
+.osc-actions .btn-outline {
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+@media (hover: hover) and (pointer: fine) {
+  .osc-actions .btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+}
+.orders-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 14px;
+  padding: 8px 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .orders-back-btn:hover { text-decoration: underline; }
+}
+.orders-list-count {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.orders-loading {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--muted);
+}
+.orders-loading .spin {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--line);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* Success */
-.success-box { text-align: center; padding: 20px 10px; }
-.success-box .si { font-size: 56px; margin-bottom: 12px; }
-.success-box h3 { font-size: 20px; margin-bottom: 8px; }
-.success-box p { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+.success-box { text-align: center; padding: 12px 8px 8px; }
+.success-box .si { font-size: 56px; margin-bottom: 10px; line-height: 1; }
+.success-box h3 { font-size: 22px; margin-bottom: 8px; font-weight: 800; letter-spacing: -.3px; }
+.success-box .success-name { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+.success-box p { color: var(--muted); font-size: 14px; line-height: 1.65; margin-bottom: 22px; }
+.success-box .success-actions { display: flex; flex-direction: column; gap: 10px; }
+.success-box .success-actions .btn { width: 100%; padding: 12px 18px; font-size: 14.5px; border-radius: 12px; }
+.success-box .btn-outline-primary {
+  background: var(--surface);
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+@media (hover: hover) and (pointer: fine) {
+  .success-box .btn-outline-primary:hover {
+    background: var(--primary-soft);
+  }
+}
+@media (min-width: 480px) {
+  .success-box .success-actions { flex-direction: row; }
+  .success-box .success-actions .btn { flex: 1; }
+}
 
 /* Toast */
 .toast {
@@ -943,7 +1455,6 @@ footer a:hover { color: #a5b4fc; }
   text-align: center;
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
-body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
 
 /* Mobile sticky bar */
 .mobile-bar {
@@ -1050,8 +1561,12 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
         <button id="searchBtn" aria-label="সার্চ">⌕</button>
       </div>
       <div class="nav-actions">
-        <button class="iconbtn" id="themeBtn" title="থিম পরিবর্তন" aria-label="থিম">🌙</button>
-        <button class="iconbtn" id="ordersBtn" title="আমার অর্ডার" aria-label="অর্ডার হিস্টোরি">📋</button>
+        <button class="iconbtn" id="ordersBtn" title="আমার অর্ডার" aria-label="অর্ডার হিস্টোরি"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+  <path d="M3.3 7L12 12l8.7-5M12 12v9.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  <circle cx="16.5" cy="16.5" r="3" stroke="currentColor" stroke-width="1.7"/>
+  <path d="M18.7 18.7L20.5 20.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+</svg></button>
         <button class="iconbtn" id="wishBtn" title="উইশলিস্ট" aria-label="উইশলিস্ট">♡<span class="badge" id="wishCount" style="display:none">0</span></button>
         <button class="iconbtn" id="cartBtn" title="কার্ট" aria-label="কার্ট">🛒<span class="badge" id="cartCount" style="display:none">0</span></button>
       </div>
@@ -1316,30 +1831,52 @@ body.dark .toast { background: #1e293b; border: 1px solid var(--line); }
   </div>
 </div>
 
-<!-- Orders Modal (with Timeline) -->
-<div class="modal-wrap" id="ordersModal">
-  <div class="modal">
-    <div class="modal-head">
-      <strong>📋 আমার অর্ডার</strong>
-      <button class="close-btn" data-close="ordersModal">✕</button>
+<!-- My Orders PAGE (full page, not popup) -->
+<div id="ordersPage">
+  <div class="op-header">
+    <div class="op-header-inner">
+      <button type="button" class="op-back" id="ordersPageBack" aria-label="ফিরে যান">←</button>
+      <h1>NexCart <span style="color:#00D4C8">BD</span></h1>
     </div>
-    <p style="font-size:13.5px;color:var(--muted);margin-bottom:14px">অর্ডার দেখতে আপনার মোবাইল নম্বর দিন</p>
-    <div style="display:flex;gap:8px;margin-bottom:16px">
-      <input id="historyPhone" type="tel" placeholder="01XXXXXXXXX" style="flex:1;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);outline:none">
-      <button class="btn btn-primary" id="lookupOrdersBtn" style="padding:12px 18px;white-space:nowrap">দেখুন</button>
+  </div>
+  <div class="op-body">
+    <div class="op-search-card" id="ordersSearchCard">
+      <div class="op-hero">
+        <div class="op-hero-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="#4f46e5" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M3.3 7 L12 12 l8.7-5 M12 12 v9.5" stroke="#4f46e5" stroke-width="1.7" stroke-linecap="round"/>
+            <circle cx="17.5" cy="17.5" r="3.2" stroke="#4f46e5" stroke-width="1.7"/>
+            <path d="M19.7 19.7 L21.2 21.2" stroke="#4f46e5" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="op-hero-title">আমার অর্ডার</div>
+          <div class="op-hero-sub">আপনার অর্ডারের তথ্য ও ডেলিভারি ট্র্যাক করুন</div>
+        </div>
+      </div>
+      <div class="op-divider"></div>
+      <label class="op-field-label" for="historyPhone">অর্ডার দেখতে আপনার মোবাইল নম্বর দিন</label>
+      <input id="historyPhone" class="op-phone-input" type="tel" placeholder="01XXXXXXXXX" inputmode="numeric" autocomplete="tel" maxlength="15" aria-label="মোবাইল নম্বর">
+      <button class="btn btn-primary op-lookup-btn" id="lookupOrdersBtn">দেখুন</button>
     </div>
     <div id="ordersList"></div>
   </div>
 </div>
 
+
 <!-- Success Modal -->
 <div class="modal-wrap" id="successModal">
-  <div class="modal">
+  <div class="modal" style="max-width:420px">
     <div class="success-box">
-      <div class="si">✅</div>
+      <div class="si">🛍️</div>
       <h3>অর্ডার সফল হয়েছে!</h3>
-      <p id="successMsg">ধন্যবাদ! আপনার অর্ডার গ্রহণ করা হয়েছে। শীঘ্রই যোগাযোগ করা হবে।</p>
-      <button class="btn btn-primary" data-close="successModal">ঠিক আছে</button>
+      <div class="success-name" id="successName"></div>
+      <p id="successMsg">আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে। শীঘ্রই যোগাযোগ করা হবে।</p>
+      <div class="success-actions">
+        <button class="btn btn-primary" id="successViewOrdersBtn">আমার অর্ডার দেখুন</button>
+        <button class="btn btn-outline-primary" data-close="successModal">ঠিক আছে</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1373,6 +1910,7 @@ const imgOf = p => (Array.isArray(p.images) && p.images[0]) ? p.images[0] : "htt
 const BD_GEO = {"ঢাকা":["ধামরাই","দোহার","কেরানীগঞ্জ","নবাবগঞ্জ","সাভার","তেজগাঁও","মোহাম্মদপুর","মিরপুর","উত্তরা","গুলশান","বনানী","বাড্ডা","খিলগাঁও","মতিঝিল","যাত্রাবাড়ী","ডেমরা","সদরঘাট","ওয়ারী","লালবাগ","কোটওয়ালী","রমনা","শাহবাগ","পল্টন","সূত্রাপুর","বংশাল","চকবাজার","হাজারীবাগ","নিউমার্কেট","ধানমন্ডি","কলাবাগান","শ্যামপুর","কদমতলী","কামরাঙ্গীরচর"],"গাজীপুর":["গাজীপুর সদর","কালিয়াকৈর","কাপাসিয়া","শ্রীপুর","কালীগঞ্জ","টঙ্গী"],"নারায়ণগঞ্জ":["নারায়ণগঞ্জ সদর","আড়াইহাজার","রূপগঞ্জ","সোনারগাঁও","বন্ধর"],"নরসিংদী":["নরসিংদী সদর","বেলাব","মনোহরদী","পলাশ","রায়পুরা","শিবপুর"],"মানিকগঞ্জ":["মানিকগঞ্জ সদর","সিংগাইর","ঘিওর","শিবালয়","ডৌলতপুর","হরিরামপুর","সাটুরিয়া"],"মুন্সিগঞ্জ":["মুন্সিগঞ্জ সদর","শ্রীনগর","সিরাজদিখান","টংগিবাড়ী","লৌহজং","গজারিয়া"],"টাঙ্গাইল":["টাঙ্গাইল সদর","বাসাইল","ভূঞাপুর","দেলদুয়ার","ঘাটাইল","গোপালপুর","মধুপুর","মির্জাপুর","নাগরপুর","সখিপুর","কালিহাতী","ধনবাড়ী"],"কিশোরগঞ্জ":["কিশোরগঞ্জ সদর","অষ্টগ্রাম","বাজিতপুর","ভৈরব","হোসেনপুর","ইটনা","করিমগঞ্জ","কটিয়াদী","কুলিয়ারচর","মিঠামইন","নিকলী","পাকুন্দিয়া","তাড়াইল"],"ফরিদপুর":["ফরিদপুর সদর","আলফাডাঙ্গা","বোয়ালমারী","চরভদ্রাসন","মধুখালী","নগরকান্দা","সদরপুর","সালথা","ভাঙ্গা"],"মাদারীপুর":["মাদারীপুর সদর","কালকিনি","রাজৈর","শিবচর"],"গোপালগঞ্জ":["গোপালগঞ্জ সদর","কাশিয়ানী","কোটালীপাড়া","মুকসুদপুর","টুঙ্গিপাড়া"],"রাজবাড়ী":["রাজবাড়ী সদর","বালিয়াকান্দি","গোয়ালন্দ","পাংশা","কালুখালী"],"শরীয়তপুর":["শরীয়তপুর সদর","ডামুড্যা","গোসাইরহাট","নড়িয়া","ভেদরগঞ্জ","জাজিরা"],"চট্টগ্রাম":["চট্টগ্রাম সদর","আনোয়ারা","বাঁশখালী","বোয়ালখালী","চন্দনাইশ","ফটিকছড়ি","হাটহাজারী","লোহাগাড়া","মীরসরাই","পটিয়া","রাঙ্গুনিয়া","রাউজান","সন্দ্বীপ","সাতকানিয়া","সীতাকুণ্ড"],"কক্সবাজার":["কক্সবাজার সদর","চকরিয়া","কুতুবদিয়া","মহেশখালী","রামু","টেকনাফ","উখিয়া","পেকুয়া"],"কুমিল্লা":["কুমিল্লা সদর","বরুড়া","ব্রাহ্মণপাড়া","বুড়িচং","চান্দিনা","চৌদ্দগ্রাম","দাউদকান্দি","দেবিদ্বার","হোমনা","লাকসাম","মনোহরগঞ্জ","মেঘনা","মুরাদনগর","নাঙ্গলকোট","তিতাস","সদর দক্ষিণ"],"ফেনী":["ফেনী সদর","ছাগলনাইয়া","দাগনভূঞা","পরশুরাম","সোনাগাজী","ফুলগাজী"],"ব্রাহ্মণবাড়িয়া":["ব্রাহ্মণবাড়িয়া সদর","আখাউড়া","আশুগঞ্জ","বাঞ্ছারামপুর","বিজয়নগর","কসবা","নবীনগর","নাসিরনগর","সরাইল"],"নোয়াখালী":["নোয়াখালী সদর","বেগমগঞ্জ","চাটখিল","কোম্পানীগঞ্জ","হাতিয়া","সেনবাগ","সোনাইমুড়ী","সুবর্ণচর"],"লক্ষ্মীপুর":["লক্ষ্মীপুর সদর","রামগঞ্জ","রামগতি","রায়পুর","কমলনগর"],"চাঁদপুর":["চাঁদপুর সদর","ফরিদগঞ্জ","হাইমচর","হাজীগঞ্জ","কচুয়া","মতলব উত্তর","মতলব দক্ষিণ","শাহরাস্তি"],"সিলেট":["সিলেট সদর","বালাগঞ্জ","বিয়ানীবাজার","বিশ্বনাথ","কোম্পানীগঞ্জ","ফেঞ্চুগঞ্জ","গোলাপগঞ্জ","গোয়াইনঘাট","জৈন্তাপুর","কানাইঘাট","জকিগঞ্জ","দক্ষিণ সুরমা","ওসমানীনগর"],"মৌলভীবাজার":["মৌলভীবাজার সদর","বড়লেখা","জুড়ী","কমলগঞ্জ","কুলাউড়া","রাজনগর","শ্রীমঙ্গল"],"হবিগঞ্জ":["হবিগঞ্জ সদর","আজমিরীগঞ্জ","বাহুবল","বানিয়াচং","চুনারুঘাট","লাখাই","মাধবপুর","নবীগঞ্জ","শায়েস্তাগঞ্জ"],"সুনামগঞ্জ":["সুনামগঞ্জ সদর","বিশ্বম্ভরপুর","ছাতক","দক্ষিণ সুনামগঞ্জ","দিরাই","ধর্মপাশা","দোয়ারাবাজার","জগন্নাথপুর","জামালগঞ্জ","শাল্লা","তাহিরপুর"],"রাজশাহী":["রাজশাহী সদর","বাঘা","বাগমারা","চারঘাট","দুর্গাপুর","গোদাগাড়ী","মোহনপুর","পবা","পুঠিয়া","তানোর"],"নাটোর":["নাটোর সদর","বাগাতিপাড়া","বড়াইগ্রাম","গুরুদাসপুর","লালপুর","সিংড়া","নলডাঙ্গা"],"নওগাঁ":["নওগাঁ সদর","আত্রাই","বদলগাছী","ধামইরহাট","মান্দা","মহাদেবপুর","নিয়ামতপুর","পত্নীতলা","পরনপুর","রানীনগর","সাপাহার"],"চাঁপাইনবাবগঞ্জ":["চাঁপাইনবাবগঞ্জ সদর","গোমস্তাপুর","নাচোল","শিবগঞ্জ","ভোলাহাট"],"পাবনা":["পাবনা সদর","আটঘরিয়া","বেড়া","ভাঙ্গুড়া","চাটমোহর","ফরিদপুর","ঈশ্বরদী","সুজানগর"],"সিরাজগঞ্জ":["সিরাজগঞ্জ সদর","বেলকুচি","চৌহালি","কামারখন্দ","কাজীপুর","রায়গঞ্জ","শাহজাদপুর","তাড়াশ","উল্লাপাড়া"],"বগুড়া":["বগুড়া সদর","আদমদীঘি","ধুনট","দুপচাঁচিয়া","গাবতলী","কাহালু","নন্দীগ্রাম","সারিয়াকান্দি","শাজাহানপুর","শেরপুর","শিবগঞ্জ","সোনাতলা"],"জয়পুরহাট":["জয়পুরহাট সদর","আক্কেলপুর","কালাই","ক্ষেতলাল","পাঁচবিবি"],"খুলনা":["খুলনা সদর","বটিয়াঘাটা","ডুমুরিয়া","দীঘলিয়া","কয়রা","পাইকগাছা","ফুলতলা","রূপসা","তেরখাদা"],"বাগেরহাট":["বাগেরহাট সদর","চিতলমারী","ফকিরহাট","কচুয়া","মোল্লাহাট","মোরেলগঞ্জ","রামপাল","মোংলা","শরণখোলা"],"সাতক্ষীরা":["সাতক্ষীরা সদর","আশাশুনি","দেবহাটা","কালিগঞ্জ","কলারোয়া","তালা","শ্যামনগর"],"যশোর":["যশোর সদর","অভয়নগর","বাঘারপাড়া","চৌগাছা","ঝিকরগাছা","কেশবপুর","মণিরামপুর","শার্শা"],"ঝিনাইদহ":["ঝিনাইদহ সদর","কালীগঞ্জ","কোটচাঁদপুর","মহেশপুর","শৈলকুপা","হরিণাকুণ্ডু"],"মাগুরা":["মাগুরা সদর","মোহাম্মদপুর","শালিখা","শ্রীপুর"],"নড়াইল":["নড়াইল সদর","কালিয়া","লোহাগড়া"],"কুষ্টিয়া":["কুষ্টিয়া সদর","ভেরামারা","দৌলতপুর","খোকসা","কুমারখালী","মিরপুর"],"মেহেরপুর":["মেহেরপুর সদর","গাংনী","মুজিবনগর"],"চুয়াডাঙ্গা":["চুয়াডাঙ্গা সদর","আলমডাঙ্গা","দামুড়হুদা","জীবননগর"],"বরিশাল":["বরিশাল সদর","আগৈলঝাড়া","বাবুগঞ্জ","বাকেরগঞ্জ","বানারীপাড়া","গৌরনদী","হিজলা","মেহেন্দিগঞ্জ","মুলাদী","উজিরপুর"],"পটুয়াখালী":["পটুয়াখালী সদর","বাউফল","দশমিনা","গলাচিপা","কলাপাড়া","মির্জাগঞ্জ","দুমকি","রাঙ্গাবালী"],"ভোলা":["ভোলা সদর","বোরহানউদ্দিন","চরফ্যাশন","দৌলতখান","লালমোহন","মনপুরা","তজুমদ্দিন"],"পিরোজপুর":["পিরোজপুর সদর","নাজিরপুর","নেসারাবাদ","ভান্ডারিয়া","মঠবাড়িয়া","কাউখালী","ইন্দুরকানী"],"ঝালকাঠি":["ঝালকাঠি সদর","কাঠালিয়া","নলছিটি","রাজাপুর"],"বরগুনা":["বরগুনা সদর","আমতলী","বামনা","বেতাগী","পাথরঘাটা","তালতলী"],"রংপুর":["রংপুর সদর","বদরগঞ্জ","গংগাচড়া","কাউনিয়া","মিঠাপুকুর","পীরগাছা","পীরগঞ্জ","তারাগঞ্জ"],"দিনাজপুর":["দিনাজপুর সদর","বীরগঞ্জ","বোচাগঞ্জ","বিরল","চিরিরবন্দর","ফুলবাড়ী","ঘোড়াঘাট","হাকিমপুর","কাহারোল","খানসামা","নবাবগঞ্জ","পার্বতীপুর"],"কুড়িগ্রাম":["কুড়িগ্রাম সদর","ভুরুঙ্গামারী","চর রাজিবপুর","চিলমারী","ফুলবাড়ী","নাগেশ্বরী","রাজারহাট","রৌমারী","উলিপুর"],"গাইবান্ধা":["গাইবান্ধা সদর","ফুলছড়ি","গোবিন্দগঞ্জ","পলাশবাড়ী","সাদুল্লাপুর","সাঘাটা","সুন্দরগঞ্জ"],"লালমনিরহাট":["লালমনিরহাট সদর","আদিতমারী","হাতীবান্ধা","কালীগঞ্জ","পাটগ্রাম"],"নীলফামারী":["নীলফামারী সদর","ডিমলা","ডোমার","জলঢাকা","কিশোরগঞ্জ","সৈয়দপুর"],"ঠাকুরগাঁও":["ঠাকুরগাঁও সদর","বালিয়াডাঙ্গী","হরিপুর","পীরগঞ্জ","রাণীশংকৈল"],"পঞ্চগড়":["পঞ্চগড় সদর","আটোয়ারী","বোদা","দেবীগঞ্জ","তেতুলিয়া"],"ময়মনসিংহ":["ময়মনসিংহ সদর","ভালুকা","ধোবাউড়া","ফুলপুর","গফরগাঁও","গৌরীপুর","হালুয়াঘাট","ঈশ্বরগঞ্জ","মুক্তাগাছা","নান্দাইল","ফুলবাড়ীয়া","ত্রিশাল"],"জামালপুর":["জামালপুর সদর","বকশীগঞ্জ","দেওয়ানগঞ্জ","ইসলামপুর","মাদারগঞ্জ","মেলান্দহ","সরিষাবাড়ী"],"শেরপুর":["শেরপুর সদর","নালিতাবাড়ী","নকলা","শ্রীবরদী","ঝিনাইগাতী"],"নেত্রকোণা":["নেত্রকোণা সদর","আটপাড়া","বারহাট্টা","দুর্গাপুর","কলমাকান্দা","কেন্দুয়া","খালিয়াজুরি","মদন","মোহনগঞ্জ","পূর্বধলা"]};
 
 let products = [], cart = [], wishlist = [], paymentMethods = [], category = "সব", searchText = "", checkoutDraft = null, WHATSAPP = "8801307352309", toastTimer;
+let TELEGRAM = { enabled: false, bot_token: "", chat_id: "" };
 let directOrderMode = false; // true when opened via product deep link ?id=
 let SHIP_DHAKA = 60, SHIP_OUTSIDE = 120;
 let storeCategories = []; // [{ name, icon }]
@@ -1386,7 +1924,6 @@ try {
 function save() {
   localStorage.setItem("stbd_cart", JSON.stringify(cart));
   localStorage.setItem("stbd_wishlist", JSON.stringify(wishlist));
-  localStorage.setItem("stbd_theme", document.body.classList.contains("dark") ? "dark" : "light");
 }
 function notify(msg) {
   const t = $("toast");
@@ -1611,6 +2148,18 @@ async function loadSettings() {
     if (wa) WHATSAPP = String(wa).replace(/\D/g, "");
     applyWhatsAppEverywhere();
 
+    let tg = map.telegram;
+    if (typeof tg === "string") { try { tg = JSON.parse(tg); } catch (e) { tg = null; } }
+    if (tg && typeof tg === "object") {
+      TELEGRAM = {
+        enabled: !!tg.enabled,
+        bot_token: String(tg.bot_token || "").trim(),
+        chat_id: String(tg.chat_id || "").trim()
+      };
+    } else {
+      TELEGRAM = { enabled: false, bot_token: "", chat_id: "" };
+    }
+
     let ship = map.shipping_charges;
     if (typeof ship === "string") { try { ship = JSON.parse(ship); } catch (e) { ship = null; } }
     if (ship && typeof ship === "object") {
@@ -1738,10 +2287,16 @@ function renderCategories() {
   const fromSettings = storeCategories.map(c => c.name);
   const names = [...new Set([...fromSettings, ...fromProducts])];
   const cats = ["সব", ...names];
-  $("categoryGrid").innerHTML = cats.map(c => `
+  $("categoryGrid").innerHTML = cats.map(c => {
+    const count = c === "সব"
+      ? products.length
+      : products.filter(p => p.category === c).length;
+    return `
     <button class="cat-chip ${category === c ? "active" : ""}" data-category="${safe(c)}">
+      <span class="cat-count">${count}</span>
       <span class="em">${catIconHtml(c)}</span><span>${safe(c)}</span>
-    </button>`).join("");
+    </button>`;
+  }).join("");
 }
 
 function renderFooterLinks(containerId, links, extraHtml) {
@@ -2114,35 +2669,185 @@ function updateCheckoutTotal() {
   $("checkoutTotal").textContent = `সাবটোটাল ${money(sub)} + ডেলিভারি ${money(ship)} = মোট ${money(sub + ship)}`;
 }
 
+let _ordersPageOpen = false;
+
 function openOrdersModal() {
+  // Full page (not popup)
   $("ordersList").innerHTML = "";
-  $("historyPhone").value = ""; // আর আগের নাম্বার অটো থাকবে না
-  openOverlay("ordersModal");
+  if ($("historyPhone")) $("historyPhone").value = "";
+  _myOrdersCache = [];
+  _myOrdersPhone = "";
+  const searchCard = $("ordersSearchCard");
+  if (searchCard) searchCard.style.display = "";
+  // Hide shop chrome
+  document.querySelectorAll("header, main, footer, .topbar, .mobile-bar").forEach(el => {
+    if (el) el.style.display = "none";
+  });
+  const page = $("ordersPage");
+  if (page) {
+    page.classList.add("show");
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+  document.body.style.overflow = "";
+  _ordersPageOpen = true;
+  // ফোনের ব্যাক বাটন কাজ করবে
+  if (!location.hash.includes("orders")) {
+    history.pushState({ nexcartOrders: true }, "", "#orders");
+  }
 }
 
-/* Status Timeline Helper */
-function getStatusSteps(status) {
-  const steps = [
-    { key: "নতুন", label: "অর্ডার\nগ্রহণ" },
-    { key: "নিশ্চিত", label: "নিশ্চিত" },
-    { key: "প্রসেসিং", label: "প্রসেসিং" },
-    { key: "পাঠানো হয়েছে", label: "পাঠানো" },
-    { key: "সম্পন্ন", label: "ডেলিভার্ড" }
-  ];
-  const cancel = status === "বাতিল";
-  let currentIdx = steps.findIndex(s => s.key === status);
-  if (status === "নিশ্চিত") currentIdx = 1;
-  if (status === "প্রসেসিং") currentIdx = 2;
-  if (status === "পাঠানো হয়েছে") currentIdx = 3;
-  if (status === "সম্পন্ন") currentIdx = 4;
-  if (status === "নতুন") currentIdx = 0;
+function closeOrdersPage(fromPopstate) {
+  if (!_ordersPageOpen && !$("ordersPage")?.classList.contains("show")) return;
+  const page = $("ordersPage");
+  if (page) page.classList.remove("show");
+  document.querySelectorAll("header, main, footer, .topbar").forEach(el => {
+    if (el) el.style.display = "";
+  });
+  const mb = $("mobileBar");
+  if (mb) mb.style.display = "";
+  _myOrdersCache = [];
+  _myOrdersPhone = "";
+  if ($("ordersList")) $("ordersList").innerHTML = "";
+  if ($("historyPhone")) $("historyPhone").value = "";
+  _ordersPageOpen = false;
+  // UI ব্যাক বাটন → history.back (popstate will also fire — guard with flag)
+  if (!fromPopstate && location.hash.includes("orders")) {
+    history.back();
+  } else if (location.hash.includes("orders")) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+}
 
-  return steps.map((s, i) => {
+window.addEventListener("popstate", () => {
+  if (_ordersPageOpen || $("ordersPage")?.classList.contains("show")) {
+    closeOrdersPage(true);
+  }
+});
+
+document.getElementById("successViewOrdersBtn")?.addEventListener("click", () => {
+  closeOverlay("successModal");
+  openOrdersModal();
+});
+
+document.getElementById("ordersPageBack")?.addEventListener("click", () => {
+  closeOrdersPage(false);
+});
+
+
+$("historyPhone")?.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); lookupOrders(); }
+});
+
+/* Status Timeline Helper — My Orders */
+function getOrderStatusIndex(status) {
+  const map = {
+    "নতুন": 0,
+    "নিশ্চিত": 1,
+    "প্রসেসিং": 2,
+    "পাঠানো হয়েছে": 3,
+    "সম্পন্ন": 4
+  };
+  return map[status] ?? 0;
+}
+
+function trackIconSvg(name, done) {
+  // White stroke icons for green circles (done/current), muted for pending
+  const c = done ? "#ffffff" : "#94a3b8";
+  const icons = {
+    check: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="${c}" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    box: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><path d="M3.3 7L12 12l8.7-5M12 12v9.5" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`,
+    truck: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><circle cx="5.5" cy="18.5" r="2.5" stroke="${c}" stroke-width="2"/><circle cx="18.5" cy="18.5" r="2.5" stroke="${c}" stroke-width="2"/></svg>`,
+    gift: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="4" rx="1" stroke="${c}" stroke-width="2"/><path d="M12 8v13M3 12v8a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-8" stroke="${c}" stroke-width="2" stroke-linecap="round"/><path d="M12 8H7.5a2.5 2.5 0 1 1 0-5C11 3 12 8 12 8zM12 8h4.5a2.5 2.5 0 0 0 0-5C13 3 12 8 12 8z" stroke="${c}" stroke-width="2" stroke-linejoin="round"/></svg>`
+  };
+  return icons[name] || icons.check;
+}
+
+function getTrackingSteps(status) {
+  const isCancel = status === "বাতিল";
+  const idx = isCancel ? -1 : getOrderStatusIndex(status || "নতুন");
+  // idx: 0 নতুন, 1 নিশ্চিত, 2 প্রসেসিং, 3 পাঠানো হয়েছে, 4 সম্পন্ন
+  const defs = [
+    {
+      key: "নতুন",
+      title: "অর্ডার গ্রহণ",
+      icon: "check",
+      doneMsg: "আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে।",
+      pendingMsg: "আপনার অর্ডার গ্রহণের অপেক্ষায় রয়েছে।"
+    },
+    {
+      key: "নিশ্চিত",
+      title: "অর্ডার নিশ্চিত",
+      icon: "check",
+      doneMsg: "আপনার অর্ডারটি নিশ্চিত করা হয়েছে।",
+      pendingMsg: "অর্ডারটি নিশ্চিত হওয়ার অপেক্ষায় রয়েছে।"
+    },
+    {
+      key: "প্রসেসিং",
+      title: "প্রসেসিং",
+      icon: "box",
+      doneMsg: "আপনার অর্ডারের পণ্য প্রস্তুত করা হয়েছে।",
+      currentMsg: "আপনার অর্ডারের পণ্য প্রস্তুত করা হচ্ছে।",
+      pendingMsg: "আপনার অর্ডার প্রস্তুত করার ধাপ এখনো শুরু হয়নি।"
+    },
+    {
+      key: "পাঠানো হয়েছে",
+      title: "পাঠানো হয়েছে",
+      icon: "truck",
+      doneMsg: "আপনার অর্ডারটি কুরিয়ারের মাধ্যমে পাঠানো হয়েছে।",
+      pendingMsg: "আপনার অর্ডারটি কুরিয়ারে পাঠানোর অপেক্ষায় রয়েছে।"
+    },
+    {
+      key: "সম্পন্ন",
+      title: "ডেলিভারি সম্পন্ন",
+      icon: "gift",
+      doneMsg: "ডেলিভারি সম্পন্ন হয়েছে! আপনার পণ্য সফলভাবে পৌঁছে দেওয়া হয়েছে।",
+      pendingMsg: "আপনার অর্ডারটির ডেলিভারি এখনো সম্পন্ন হয়নি।"
+    }
+  ];
+
+  return defs.map((d, i) => {
     let cls = "";
-    if (cancel) cls = i === 0 ? "done" : "";
-    else if (i < currentIdx) cls = "done";
-    else if (i === currentIdx) cls = "current";
-    return { ...s, cls };
+    let desc = d.pendingMsg;
+    let showDoneBadge = false;
+
+    if (isCancel) {
+      if (i === 0) { cls = "done"; desc = d.doneMsg; showDoneBadge = true; }
+      else { cls = ""; desc = d.pendingMsg; }
+      return { ...d, cls, desc, showDoneBadge };
+    }
+
+    if (i < idx) {
+      cls = "done";
+      desc = d.doneMsg;
+      showDoneBadge = true;
+    } else if (i === idx) {
+      if (idx === 4) {
+        // সম্পন্ন / ডেলিভারি সম্পন্ন
+        cls = "done";
+        desc = d.doneMsg;
+        showDoneBadge = true;
+      } else if (idx === 0) {
+        // নতুন = অর্ডার গ্রহণ সম্পন্ন
+        cls = "done";
+        desc = d.doneMsg;
+        showDoneBadge = true;
+      } else if (idx === 2) {
+        // প্রসেসিং চলমান
+        cls = "current";
+        desc = d.currentMsg || d.doneMsg;
+        showDoneBadge = false;
+      } else {
+        // নিশ্চিত / পাঠানো হয়েছে — ধাপ পৌঁছেছে
+        cls = "done";
+        desc = d.doneMsg;
+        showDoneBadge = true;
+      }
+    } else {
+      cls = "";
+      desc = d.pendingMsg;
+      showDoneBadge = false;
+    }
+    return { ...d, cls, desc, showDoneBadge };
   });
 }
 
@@ -2153,54 +2858,267 @@ function statusClass(st) {
   if (st === "প্রসেসিং" || st === "নিশ্চিত") return "proc";
   return "";
 }
+function statusLabel(st) {
+  if (st === "সম্পন্ন") return "ডেলিভারি সম্পন্ন";
+  return st || "নতুন";
+}
+
+function formatOrderPay(o) {
+  const raw = String(o.payment_method || "");
+  const txn = String(o.transaction_id || "").trim();
+  const isCOD = /cash on delivery|cod|ক্যাশ অন ডেলিভারি/i.test(raw);
+  let methodName = raw.split("|")[0].trim() || "—";
+  if (isCOD) methodName = "ক্যাশ অন ডেলিভারি";
+  let badgeClass = "pending";
+  let badgeText = methodName;
+  if (isCOD) {
+    badgeClass = "cod";
+    badgeText = "💵 ক্যাশ অন ডেলিভারি";
+  } else if (txn) {
+    badgeClass = "paid";
+    badgeText = "✓ " + methodName + " (পেমেন্ট সম্পন্ন)";
+  } else if (methodName && methodName !== "—") {
+    badgeClass = "pending";
+    badgeText = methodName + " (পেমেন্ট অপেক্ষমাণ)";
+  }
+  // Extract sender from "From: 01..."
+  let sender = "";
+  const fromMatch = raw.match(/From:\s*([0-9+\-\s]+)/i);
+  if (fromMatch) sender = fromMatch[1].trim();
+  return { methodName, badgeClass, badgeText, txn, sender, isCOD };
+}
+
+function orderItemImage(item) {
+  // Try live product catalog first
+  const p = byId(item.id);
+  if (p) {
+    const src = imgOf(p);
+    if (src) return src;
+  }
+  if (item.image) return item.image;
+  return "https://placehold.co/100x100/eef2ff/4f46e5?text=NC";
+}
+
+function renderOrderCard(o) {
+  const items = Array.isArray(o.items) ? o.items : [];
+  const st = o.status || "নতুন";
+  const stClass = statusClass(st);
+  const stText = statusLabel(st);
+  const isCancel = st === "বাতিল";
+  const steps = getTrackingSteps(st);
+  const pay = formatOrderPay(o);
+  const shortId = String(o.id).slice(0, 8).toUpperCase();
+  const dateStr = o.created_at
+    ? new Date(o.created_at).toLocaleString("bn-BD", { dateStyle: "medium", timeStyle: "short" })
+    : "—";
+  const shipping = Number(o.shipping) || 0;
+  const total = Number(o.total) || 0;
+  const subtotal = Math.max(0, total - shipping);
+
+  const itemsHtml = items.length
+    ? items.map(i => {
+        const qty = i.quantity || i.qty || 1;
+        const price = Number(i.price) || 0;
+        const lineTotal = price * qty;
+        const varLabel = i.variantLabel || "";
+        return `<div class="order-item-row">
+          <img src="${safe(orderItemImage(i))}" alt="" loading="lazy" onerror="this.src='https://placehold.co/100x100/eef2ff/4f46e5?text=NC'">
+          <div>
+            <div class="oi-name">${safe(i.name || "পণ্য")}</div>
+            ${varLabel ? `<div class="oi-var">${safe(varLabel)}</div>` : ""}
+            <div class="oi-meta">পরিমাণ: ${qty}${price ? " · " + money(price) + " করে" : ""}</div>
+          </div>
+          <div class="oi-price">${money(lineTotal || price)}</div>
+        </div>`;
+      }).join("")
+    : `<p style="font-size:13px;color:var(--muted);margin-bottom:12px">পণ্যের তালিকা পাওয়া যায়নি।</p>`;
+
+  const trackHtml = isCancel
+    ? `<div class="track-cancel-note">এই অর্ডার বাতিল করা হয়েছে।</div>`
+    : `<div class="tracking-section">
+        <h4>📍 আপনার অর্ডার ট্র্যাকিং</h4>
+        <div class="track-list">
+          ${steps.map(s => `
+            <div class="track-step ${s.cls}">
+              <div class="ts-rail">
+                <div class="ts-dot">${s.cls === "done" ? trackIconSvg("check", true) : trackIconSvg(s.icon, s.cls === "current")}</div>
+                <div class="ts-line"></div>
+              </div>
+              <div class="ts-body">
+                <div class="ts-title">${safe(s.title)}</div>
+                <div class="ts-desc">${safe(s.desc)}</div>
+                ${s.showDoneBadge || s.cls === "done" ? `<div class="ts-badge">সম্পন্ন</div>` : ""}
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>`;
+
+  return `<div class="order-card">
+    <div class="oh">
+      <span class="oid">#${safe(shortId)}</span>
+      <span class="ost ${stClass}">${safe(stText)}</span>
+    </div>
+    <div class="o-date">📅 ${safe(dateStr)}</div>
+    <div class="order-items-list">${itemsHtml}</div>
+    <div class="order-summary-box">
+      <div class="os-row"><span>সাবটোটাল</span><span>${money(subtotal)}</span></div>
+      <div class="os-row"><span>ডেলিভারি</span><span>${money(shipping)}</span></div>
+      <div class="os-row os-total"><span>মোট</span><span>${money(total)}</span></div>
+      ${o.address ? `<div style="margin-top:10px"><span class="os-label">📍 ঠিকানা:</span><br>${safe(o.address)}</div>` : ""}
+      <div style="margin-top:10px">
+        <span class="os-label">💳 পেমেন্ট:</span><br>
+        <span class="order-pay-badge ${pay.badgeClass}">${safe(pay.badgeText)}</span>
+        ${pay.txn ? `<div style="margin-top:6px;font-size:12.5px">Txn ID: <b style="color:var(--text)">${safe(pay.txn)}</b></div>` : ""}
+        ${pay.sender ? `<div style="margin-top:4px;font-size:12.5px">পাঠানোর নম্বর: ${safe(pay.sender)}</div>` : ""}
+      </div>
+    </div>
+    ${trackHtml}
+  </div>`;
+}
+
+function productNamesSummary(items) {
+  if (!items || !items.length) return "পণ্য নেই";
+  const names = items.map(i => {
+    const n = String(i.name || "পণ্য").replace(/\s*\([^)]*\)\s*$/, "").trim();
+    return n;
+  });
+  // unique-ish keep order
+  const seen = new Set();
+  const uniq = [];
+  names.forEach(n => {
+    if (!seen.has(n)) { seen.add(n); uniq.push(n); }
+  });
+  if (uniq.length === 1) return uniq[0];
+  if (uniq.length === 2) return uniq[0] + ", " + uniq[1];
+  return uniq[0] + " +" + (uniq.length - 1) + "টি আরও";
+}
+
+function renderOrderSummaryCard(o) {
+  const items = Array.isArray(o.items) ? o.items : [];
+  const st = o.status || "নতুন";
+  const stClass = statusClass(st);
+  const stText = statusLabel(st);
+  const shortId = String(o.id).slice(0, 8).toUpperCase();
+  const dateStr = o.created_at
+    ? new Date(o.created_at).toLocaleDateString("bn-BD")
+    : "";
+  const total = Number(o.total) || 0;
+  const products = productNamesSummary(items);
+  const oid = String(o.id);
+  const first = items[0] || {};
+  const qty = items.reduce((s, i) => s + (Number(i.quantity || i.qty) || 1), 0);
+  const img = orderItemImage(first);
+
+  return `<div class="order-summary-card">
+    <div class="osc-top">
+      <span class="osc-id">অর্ডার #${safe(shortId)}</span>
+      <span class="ost ${stClass}">${safe(stText)}</span>
+    </div>
+    <div class="osc-body">
+      <img src="${safe(img)}" alt="" loading="lazy" onerror="this.src='https://placehold.co/100x100/eef2ff/4f46e5?text=NC'">
+      <div class="osc-info">
+        <div class="osc-products">${safe(products)}</div>
+        <div class="osc-meta-line">পরিমাণ: ${qty}</div>
+        ${dateStr ? `<div class="osc-meta-line">তারিখ: ${safe(dateStr)}</div>` : ""}
+        <div class="osc-total">${money(total)}</div>
+      </div>
+    </div>
+    <div class="osc-actions">
+      <button type="button" class="btn btn-outline" data-order-detail="${safe(oid)}">বিস্তারিত দেখুন →</button>
+    </div>
+  </div>`;
+}
+
+// Cache last looked-up orders (same phone session) — dedupe by id
+let _myOrdersCache = [];
+let _myOrdersPhone = "";
+
+function showOrdersListView() {
+  const box = $("ordersList");
+  const searchCard = $("ordersSearchCard");
+  if (searchCard) searchCard.style.display = "";
+  if (!_myOrdersCache.length) {
+    box.innerHTML = `<div class="empty" style="padding:28px 12px"><div class="ei">📋</div><h3>কোনো অর্ডার নেই</h3><p>এই নম্বরে কোনো অর্ডার পাওয়া যায়নি।</p></div>`;
+    return;
+  }
+  // একটামাত্র অর্ডার → সরাসরি বিস্তারিত (বাটন লাগবে না)
+  if (_myOrdersCache.length === 1) {
+    showOrderDetailView(String(_myOrdersCache[0].id), true);
+    return;
+  }
+  box.innerHTML =
+    `<p class="orders-list-count">${_myOrdersCache.length}টি অর্ডার পাওয়া গেছে</p>` +
+    _myOrdersCache.map(renderOrderSummaryCard).join("");
+}
+
+function showOrderDetailView(orderId, isSingle) {
+  const o = _myOrdersCache.find(x => String(x.id) === String(orderId));
+  if (!o) {
+    notify("অর্ডার পাওয়া যায়নি");
+    showOrdersListView();
+    return;
+  }
+  const searchCard = $("ordersSearchCard");
+  // বিস্তারিত দেখার সময় সার্চ কার্ড লুকানো (পরিষ্কার পেজ)
+  if (searchCard && !isSingle) searchCard.style.display = "none";
+  if (searchCard && isSingle) searchCard.style.display = "";
+
+  let backHtml = "";
+  if (!isSingle && _myOrdersCache.length > 1) {
+    backHtml = `<button type="button" class="orders-back-btn" id="ordersBackBtn">← সব অর্ডারে ফিরুন</button>`;
+  }
+  $("ordersList").innerHTML = backHtml + renderOrderCard(o);
+  $("ordersBackBtn")?.addEventListener("click", () => {
+    if (searchCard) searchCard.style.display = "";
+    // force list (skip single auto)
+    const box = $("ordersList");
+    box.innerHTML =
+      `<p class="orders-list-count">${_myOrdersCache.length}টি অর্ডার পাওয়া গেছে</p>` +
+      _myOrdersCache.map(renderOrderSummaryCard).join("");
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
 async function lookupOrders() {
-  const phone = $("historyPhone").value.trim();
+  const phone = ($("historyPhone").value || "").trim().replace(/[\s\-]/g, "");
   if (phone.length < 8) { notify("সঠিক মোবাইল নম্বর দিন"); return; }
   const btn = $("lookupOrdersBtn");
-  btn.disabled = true; btn.textContent = "খোঁজা হচ্ছে...";
-  $("ordersList").innerHTML = `<p style="text-align:center;color:var(--muted);padding:20px">লোড হচ্ছে...</p>`;
+  btn.disabled = true;
+  btn.textContent = "খোঁজা হচ্ছে...";
+  $("ordersList").innerHTML = `<div class="orders-loading"><div class="spin"></div><p>অর্ডার খোঁজা হচ্ছে...</p></div>`;
   try {
     const { data, error } = await db.rpc("get_orders_by_phone", { p_phone: phone });
     if (error) throw error;
-    const orders = data || [];
+    let orders = data || [];
+
+    // Deduplicate by order id (keep first occurrence)
+    const seen = new Set();
+    orders = orders.filter(o => {
+      const id = String(o.id);
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+
+    // Newest first
+    orders.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+
+    _myOrdersCache = orders;
+    _myOrdersPhone = phone;
+
     if (!orders.length) {
-      $("ordersList").innerHTML = `<div class="empty" style="padding:28px 12px"><div class="ei">📋</div><h3>কোনো অর্ডার নেই</h3><p>এই নম্বরে অর্ডার পাওয়া যায়নি।</p></div>`;
+      $("ordersList").innerHTML = `<div class="empty" style="padding:28px 12px"><div class="ei">📋</div><h3>কোনো অর্ডার নেই</h3><p>এই নম্বরে কোনো অর্ডার পাওয়া যায়নি। সঠিক নম্বর দিয়ে আবার চেষ্টা করুন।</p></div>`;
     } else {
-      $("ordersList").innerHTML = orders.map(o => {
-        const items = Array.isArray(o.items) ? o.items : [];
-        const stClass = statusClass(o.status);
-        const steps = getStatusSteps(o.status || "নতুন");
-        const isCancel = o.status === "বাতিল";
-        return `<div class="order-card">
-          <div class="oh">
-            <span class="oid">#${safe(String(o.id).slice(0, 8))}</span>
-            <span class="ost ${stClass}">${safe(o.status || "নতুন")}</span>
-          </div>
-          ${!isCancel ? `
-          <div class="status-timeline">
-            ${steps.map(s => `
-              <div class="status-step ${s.cls}">
-                <div class="status-dot">${s.cls === "done" ? "✓" : (s.cls === "current" ? "●" : "")}</div>
-                <span>${s.label}</span>
-              </div>`).join("")}
-          </div>` : `<p style="color:var(--danger);font-size:13px;margin:8px 0">এই অর্ডার বাতিল করা হয়েছে।</p>`}
-          <div class="oi">
-            ${new Date(o.created_at).toLocaleString("bn-BD")}<br>
-            ${items.map(i => `• ${safe(i.name)} × ${i.quantity || 1}`).join("<br>")}<br>
-            <strong style="color:var(--text)">মোট: ${money(o.total)}</strong>
-            ${o.address ? `<br>📍 ${safe(o.address)}` : ""}
-            ${o.payment_method ? `<br>💳 ${safe(o.payment_method)}` : ""}
-          </div>
-        </div>`;
-      }).join("");
+      showOrdersListView();
     }
   } catch (err) {
+    _myOrdersCache = [];
     $("ordersList").innerHTML = `<div class="empty" style="padding:28px 12px"><div class="ei">⚠️</div><h3>লোড ব্যর্থ</h3>
-      <p style="font-size:12.5px">অর্ডার লোড করতে সমস্যা হয়েছে।</p>
+      <p style="font-size:12.5px">অর্ডার লোড করতে সমস্যা হয়েছে। একটু পর আবার চেষ্টা করুন।</p>
       <p style="font-size:12px;color:var(--muted);margin-top:6px">${safe(err.message)}</p></div>`;
   }
-  btn.disabled = false; btn.textContent = "দেখুন";
+  btn.disabled = false;
+  btn.textContent = "দেখুন";
 }
 
 /* Events */
@@ -2213,6 +3131,11 @@ document.addEventListener("click", e => {
   const close = e.target.closest("[data-close]");
   const cat = e.target.closest("[data-category]");
 
+  const orderDetail = e.target.closest("[data-order-detail]");
+  if (orderDetail) {
+    showOrderDetailView(orderDetail.dataset.orderDetail);
+    return;
+  }
   if (add) { addToCart(add.dataset.add); return; }
   if (wish) { toggleWish(wish.dataset.wish); return; }
   if (detail) { directOrderMode = false; openProduct(detail.dataset.detail); return; }
@@ -2225,13 +3148,19 @@ document.addEventListener("click", e => {
   }
   if (close) { closeOverlay(close.dataset.close); return; }
   if (cat) {
+    e.preventDefault();
     category = cat.dataset.category;
-    document.querySelectorAll(".cat-chip").forEach(b => b.classList.toggle("active", b.dataset.category === category));
-    renderProducts(); return;
+    document.querySelectorAll(".cat-chip").forEach(b => {
+      b.classList.toggle("active", b.dataset.category === category);
+      // clear any stuck :hover-like state on touch devices
+      b.blur();
+    });
+    renderProducts();
+    return;
   }
   if (e.target.id === "cartBtn" || e.target.id === "mBarCart") { renderCart(); openOverlay("cartOverlay"); }
   if (e.target.id === "wishBtn") { renderWishlist(); openOverlay("wishOverlay"); }
-  if (e.target.id === "ordersBtn" || e.target.id === "navOrders" || e.target.id === "footerOrders") { e.preventDefault(); openOrdersModal(); }
+  if (e.target.closest("#ordersBtn") || e.target.id === "navOrders" || e.target.id === "footerOrders") { e.preventDefault(); openOrdersModal(); }
   if (e.target.id === "checkoutBtn") openCheckout();
   if (e.target.id === "lookupOrdersBtn") lookupOrders();
   if (e.target.id === "emptyReset") resetFilters();
@@ -2250,12 +3179,6 @@ function resetFilters() {
   renderProducts(); notify("ফিল্টার রিসেট হয়েছে");
 }
 $("resetBtn").addEventListener("click", resetFilters);
-
-$("themeBtn").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  $("themeBtn").textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-  save();
-});
 
 /* Fill districts */
 (function initDistricts() {
@@ -2413,6 +3336,29 @@ $("confirmCodBtn")?.addEventListener("click", () => {
   finalizeOrder(checkoutDraft);
 });
 
+async function sendTelegramNotify(text) {
+  try {
+    if (!TELEGRAM || !TELEGRAM.enabled) return false;
+    const token = TELEGRAM.bot_token;
+    const chatId = TELEGRAM.chat_id;
+    if (!token || !chatId) return false;
+    const res = await fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text: String(text || "").slice(0, 4000) })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!data.ok) {
+      console.warn("Telegram notify failed:", data.description || data);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.warn("Telegram notify error:", err);
+    return false;
+  }
+}
+
 async function finalizeOrder(customer) {
   const fullAddress = customer.address + ", " + customer.upazila + ", " + customer.district;
   const rows = cart.map(i => {
@@ -2477,18 +3423,49 @@ async function finalizeOrder(customer) {
 
   if (WHATSAPP) window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(lines), "_blank");
 
+  // Telegram — অ্যাডমিন অনলাইন না থাকলেও নোটিফ যাবে
+  if (ok) {
+    sendTelegramNotify(lines).catch(() => {});
+  }
+
   if (ok) {
     cart = []; save(); updateCounts(); renderCart(); renderProducts();
     $("checkoutForm")?.reset();
     if ($("shippingInput")) $("shippingInput").value = "0";
     if ($("shipInfo")) $("shipInfo").textContent = "জেলা সিলেক্ট করলে ডেলিভারি চার্জ দেখাবে";
-    $("successMsg").textContent = `ধন্যবাদ ${customer.name}! অর্ডার গ্রহণ করা হয়েছে। অর্ডার স্ট্যাটাস দেখতে "আমার অর্ডার" মেনুতে যান।`;
+    if ($("successName")) $("successName").textContent = customer.name ? customer.name + "!" : "";
+    if ($("successMsg")) $("successMsg").textContent = "আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে। শীঘ্রই যোগাযোগ করা হবে। অর্ডার স্ট্যাটাস দেখতে নিচের বাটনে চাপুন।";
     openOverlay("successModal");
   } else {
     notify("অর্ডার WhatsApp-এ গেছে, কিন্তু ডাটাবেসে সেভ হয়নি। Supabase RLS পলিসি চেক করুন।");
     console.error("DB Error details:", dbErrorMsg);
   }
 }
+
+
+/* Clear sticky hover/focus after touch (mobile) */
+(function () {
+  let lastTouch = 0;
+  document.addEventListener("touchend", () => {
+    lastTouch = Date.now();
+    const ae = document.activeElement;
+    if (ae && (ae.tagName === "BUTTON" || ae.tagName === "A" || ae.classList.contains("cat-chip"))) {
+      setTimeout(() => { try { ae.blur(); } catch (e) {} }, 50);
+    }
+  }, { passive: true });
+  // Ignore synthetic mouse events right after touch
+  document.addEventListener("mousedown", e => {
+    if (Date.now() - lastTouch < 600) {
+      // don't prevent — just blur
+      setTimeout(() => {
+        const ae = document.activeElement;
+        if (ae && ae !== e.target && (ae.tagName === "BUTTON" || ae.classList.contains("cat-chip"))) {
+          try { ae.blur(); } catch (err) {}
+        }
+      }, 0);
+    }
+  }, true);
+})();
 
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") document.querySelectorAll(".overlay.show,.modal-wrap.show").forEach(el => closeOverlay(el.id));
@@ -2515,10 +3492,6 @@ function setupStoreRealtime() {
 }
 
 /* Init */
-if (localStorage.getItem("stbd_theme") === "dark") {
-  document.body.classList.add("dark");
-  $("themeBtn").textContent = "☀️";
-}
 $("year").textContent = new Date().getFullYear();
 updateCounts();
 (async () => {
